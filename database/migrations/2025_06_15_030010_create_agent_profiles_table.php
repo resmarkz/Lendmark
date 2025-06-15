@@ -18,7 +18,6 @@ return new class extends Migration
 
             $table->string('contact_number')->nullable();
             $table->date('date_of_birth')->nullable();
-            $table->string('source_of_income')->nullable();
             $table->timestamps();
         });
     }
