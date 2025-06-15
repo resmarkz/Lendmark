@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('contact_references', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('client_profile_id')->constrained()->onDelete('cascade');
+            $table->string('name');
+            $table->string('contact_number');
+            $table->string('relationship');
+            $table->string('source_of_income')->nullable();
             $table->timestamps();
         });
     }

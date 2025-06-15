@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('loans', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('client_profile_id')->constrained()->onDelete('cascade');
+            $table->decimal('amount', 10, 2);
+            $table->float('interest_rate');
+            $table->enum('status', ['pending', 'approved', 'rejected', 'completed']);
             $table->timestamps();
         });
     }

@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('loan_assignments', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('loan_id')->constrained()->onDelete('cascade');
+            $table->foreignId('agent_profile_id')->constrained()->onDelete('cascade');
+            $table->enum('role', ['telemarketer', 'collector']);
             $table->timestamps();
         });
     }

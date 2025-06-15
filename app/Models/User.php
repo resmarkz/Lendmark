@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role', // e.g. client, agent, admin
     ];
 
     /**
@@ -44,5 +45,18 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function clientProfile()
+    {
+        return $this->hasOne(ClientProfile::class);
+    }
+    public function agentProfile()
+    {
+        return $this->hasOne(AgentProfile::class);
+    }
+    public function adminProfile()
+    {
+        return $this->hasOne(AdminProfile::class);
     }
 }

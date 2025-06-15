@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('agent_profiles', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('department_id')->nullable()->constrained()->nullOnDelete();
+
+            $table->string('contact_number')->nullable();
+            $table->date('date_of_birth')->nullable();
+            $table->string('source_of_income')->nullable();
             $table->timestamps();
         });
     }
