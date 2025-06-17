@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('term'); // in months
             $table->float('interest_rate');
             $table->enum('status', ['ongoing', 'pending', 'approved', 'rejected', 'completed']);
+            $table->date('due_date')->nullable();
             $table->timestamps();
         });
     }
