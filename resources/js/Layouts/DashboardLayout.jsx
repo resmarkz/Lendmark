@@ -14,6 +14,11 @@ function DashboardLayout({ children, auth }) {
             href: "/dashboard/admin/overview",
         },
         {
+            name: "Manage Users",
+            icon: "fas fa-users",
+            href: "/dashboard/admin/manage-users",
+        },
+        {
             name: "Loans",
             icon: "fas fa-hand-holding-usd",
             href: "/dashboard/admin/loans",

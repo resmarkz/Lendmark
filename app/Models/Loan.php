@@ -16,6 +16,17 @@ class Loan extends Model
         'status',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($loan) {
+            $prefix = 'LM-';
+            $loan->marketing_id = $prefix . str_pad($loan->id, 6, '0', STR_PAD_LEFT);
+            $loan->save();
+        });
+    }
+
     public function clientProfile()
     {
         return $this->belongsTo(ClientProfile::class);

@@ -1,6 +1,7 @@
 import DashboardLayout from "@/Layouts/DashboardLayout";
 
-function AdminLoanSubpage() {
+function AdminLoanSubpage({ loans }) {
+    console.log(loans);
     return (
         <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
