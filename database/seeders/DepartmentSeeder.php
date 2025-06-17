@@ -9,14 +9,9 @@ class DepartmentSeeder extends Seeder
 {
     public function run()
     {
-        Department::create([
-            'name' => 'Telemarketer',
-            'description' => 'Handles client calls and marketing',
-        ]);
-
-        Department::create([
-            'name' => 'Collection',
-            'description' => 'Responsible for payment collections',
+        Department::insert([
+            ['name' => 'Telemarketer', 'description' => 'Handles loan outreach'],
+            ['name' => 'Collection', 'description' => 'Handles loan collections'],
         ]);
     }
 }

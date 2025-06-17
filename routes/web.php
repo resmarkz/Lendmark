@@ -11,9 +11,8 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard', [
-        'auth' => Auth::user(),
-    ]);
+    // Redirect to dashboard.admin.overview
+    return redirect()->route('dashboard.admin.overview');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -27,3 +26,8 @@ Route::get('/home', function () {
 })->name('home');
 
 require __DIR__ . '/auth.php';
+
+// Admin Routes
+Route::prefix('dashboard/admin')->group(function () {
+    require __DIR__ . '/admin.php';
+});
