@@ -4,6 +4,7 @@ import { Link, usePage } from "@inertiajs/react";
 function DashboardLayout({ children, auth }) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+    const [showUserTypes, setShowUserTypes] = useState(false);
     const { url } = usePage();
     const user = auth.user;
 
@@ -66,30 +67,102 @@ function DashboardLayout({ children, auth }) {
 
                 <div className="h-full overflow-y-auto py-4 space-y-6">
                     <nav className="px-4 space-y-1">
-                        {sidebarLinks.map((link) => {
-                            const isActive = url.startsWith(link.href);
-                            console.log(url, isActive);
-                            return (
-                                <Link
-                                    key={link.name}
-                                    href={link.href}
-                                    className={`flex items-center px-3 py-2 text-sm font-medium rounded-md transition-all ${
-                                        isActive
-                                            ? "bg-indigo-50 text-indigo-700"
-                                            : "text-gray-600 hover:text-indigo-600 hover:bg-indigo-50"
-                                    }`}
-                                >
-                                    <i
-                                        className={`${link.icon} mr-3 ${
-                                            isActive
-                                                ? "text-indigo-500"
-                                                : "text-gray-400"
+                        {sidebarLinks.map((link) => (
+                            <div key={link.name}>
+                                {link.name === "Manage Users" ? (
+                                    <div>
+                                        <button
+                                            onClick={() =>
+                                                setShowUserTypes(!showUserTypes)
+                                            }
+                                            className={`flex items-center justify-between w-full px-3 py-2 text-sm font-medium rounded-md ${
+                                                url.startsWith(link.href)
+                                                    ? "bg-indigo-50 text-indigo-700"
+                                                    : "text-gray-600 hover:text-indigo-600 hover:bg-indigo-50"
+                                            }`}
+                                        >
+                                            <div className="flex items-center">
+                                                <i
+                                                    className={`${
+                                                        link.icon
+                                                    } mr-3 ${
+                                                        url.startsWith(
+                                                            link.href
+                                                        )
+                                                            ? "text-indigo-500"
+                                                            : "text-gray-400"
+                                                    }`}
+                                                ></i>
+                                                {link.name}
+                                            </div>
+                                            <i
+                                                className={`fas fa-chevron-${
+                                                    showUserTypes
+                                                        ? "up"
+                                                        : "down"
+                                                } text-xs`}
+                                            ></i>
+                                        </button>
+
+                                        {showUserTypes && (
+                                            <div className="ml-8 mt-1 space-y-1">
+                                                <Link
+                                                    href="/dashboard/admin/manage-users/admins"
+                                                    className={`flex items-center px-3 py-2 text-sm rounded-md ${
+                                                        url.includes("/admins")
+                                                            ? "bg-indigo-100 text-indigo-700"
+                                                            : "text-gray-600 hover:text-indigo-600 hover:bg-indigo-50"
+                                                    }`}
+                                                >
+                                                    <i className="fas fa-user-shield mr-3"></i>
+                                                    Admins
+                                                </Link>
+                                                <Link
+                                                    href="/dashboard/admin/manage-users/clients"
+                                                    className={`flex items-center px-3 py-2 text-sm rounded-md ${
+                                                        url.includes("/clients")
+                                                            ? "bg-indigo-100 text-indigo-700"
+                                                            : "text-gray-600 hover:text-indigo-600 hover:bg-indigo-50"
+                                                    }`}
+                                                >
+                                                    <i className="fas fa-user-tie mr-3"></i>
+                                                    Clients
+                                                </Link>
+                                                <Link
+                                                    href="/dashboard/admin/manage-users/agents"
+                                                    className={`flex items-center px-3 py-2 text-sm rounded-md ${
+                                                        url.includes("/agents")
+                                                            ? "bg-indigo-100 text-indigo-700"
+                                                            : "text-gray-600 hover:text-indigo-600 hover:bg-indigo-50"
+                                                    }`}
+                                                >
+                                                    <i className="fas fa-user-cog mr-3"></i>
+                                                    Agents
+                                                </Link>
+                                            </div>
+                                        )}
+                                    </div>
+                                ) : (
+                                    <Link
+                                        href={link.href}
+                                        className={`flex items-center px-3 py-2 text-sm font-medium rounded-md ${
+                                            url.startsWith(link.href)
+                                                ? "bg-indigo-50 text-indigo-700"
+                                                : "text-gray-600 hover:text-indigo-600 hover:bg-indigo-50"
                                         }`}
-                                    ></i>
-                                    {link.name}
-                                </Link>
-                            );
-                        })}
+                                    >
+                                        <i
+                                            className={`${link.icon} mr-3 ${
+                                                url.startsWith(link.href)
+                                                    ? "text-indigo-500"
+                                                    : "text-gray-400"
+                                            }`}
+                                        ></i>
+                                        {link.name}
+                                    </Link>
+                                )}
+                            </div>
+                        ))}
                     </nav>
 
                     <div className="px-4">
@@ -101,7 +174,7 @@ function DashboardLayout({ children, auth }) {
                                 <Link
                                     key={link.name}
                                     href={link.href}
-                                    className={`flex items-center px-3 py-2 text-sm font-medium rounded-md transition-all ${
+                                    className={`flex items-center px-3 py-2 text-sm font-medium rounded-md ${
                                         url.startsWith(link.href)
                                             ? "bg-indigo-50 text-indigo-700"
                                             : "text-gray-600 hover:text-indigo-600 hover:bg-indigo-50"
@@ -150,7 +223,11 @@ function DashboardLayout({ children, auth }) {
                         >
                             <div className="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center">
                                 <span className="text-indigo-600 font-medium">
-                                    LM
+                                    {user.name
+                                        .split(" ")
+                                        .map((n) => n[0])
+                                        .join("")
+                                        .toUpperCase()}
                                 </span>
                             </div>
                             <span className="ml-2 text-gray-700 hidden sm:inline">
@@ -165,26 +242,26 @@ function DashboardLayout({ children, auth }) {
 
                         {userDropdownOpen && (
                             <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white z-50">
-                                <Link
-                                    href="/profile"
-                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                >
-                                    Your Profile
-                                </Link>
-                                <Link
-                                    href="/settings"
-                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                >
-                                    Settings
-                                </Link>
-                                <Link
-                                    href="/logout"
-                                    method="post"
-                                    as="button"
-                                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                >
-                                    Sign out
-                                </Link>
+                                {accountLinks.map((link) => (
+                                    <Link
+                                        key={link.name}
+                                        href={link.href}
+                                        method={
+                                            link.name === "Sign out"
+                                                ? "post"
+                                                : undefined
+                                        }
+                                        as={
+                                            link.name === "Sign out"
+                                                ? "button"
+                                                : undefined
+                                        }
+                                        className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    >
+                                        <i className={`${link.icon} mr-3`}></i>
+                                        {link.name}
+                                    </Link>
+                                ))}
                             </div>
                         )}
                     </div>

@@ -60,13 +60,6 @@ function AdminLoanSubpage({ loans }) {
                 <h2 className="text-lg font-medium text-gray-900">
                     Loan Management
                 </h2>
-                <Link
-                    href="/dashboard/admin/loans/create"
-                    className="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
-                >
-                    <i className="fas fa-plus mr-2"></i>
-                    New Loan
-                </Link>
             </div>
 
             {/* Responsive table container */}
@@ -125,24 +118,24 @@ function AdminLoanSubpage({ loans }) {
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                        {loansData.map((loan) => (
+                        {loans.map((loan) => (
                             <tr key={loan.id} className="hover:bg-gray-50">
                                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-indigo-600">
                                     <Link
-                                        href={`/dashboard/admin/loans/${loan.id}`}
+                                        href={`/dashboard/admin/loans/${loan.marketing_id}`}
                                         className="hover:underline"
                                     >
-                                        {loan.id}
+                                        {loan.marketing_id}
                                     </Link>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {loan.client}
+                                    Client Name
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    ${loan.amount.toLocaleString()}
+                                    ₱{parseInt(loan.amount).toLocaleString()}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {loan.interest}
+                                    {loan.interest_rate}%
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                     {loan.term}
@@ -158,7 +151,14 @@ function AdminLoanSubpage({ loans }) {
                                     </span>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {loan.dueDate}
+                                    {new Date(loan.due_date).toLocaleDateString(
+                                        "en-US",
+                                        {
+                                            month: "short",
+                                            day: "numeric",
+                                            year: "numeric",
+                                        }
+                                    )}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <div className="flex justify-end space-x-2">
@@ -185,7 +185,7 @@ function AdminLoanSubpage({ loans }) {
 
             {/* Mobile Cards View (shows on small screens) */}
             <div className="lg:hidden p-4 space-y-4">
-                {loansData.map((loan) => (
+                {loans.map((loan) => (
                     <div
                         key={loan.id}
                         className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
@@ -196,10 +196,10 @@ function AdminLoanSubpage({ loans }) {
                                     href={`/dashboard/admin/loans/${loan.id}`}
                                     className="text-indigo-600 font-medium hover:underline"
                                 >
-                                    {loan.id}
+                                    {loan.marketing_id}
                                 </Link>
                                 <p className="text-sm text-gray-500 mt-1">
-                                    {loan.client}
+                                    Client Name
                                 </p>
                             </div>
                             <span
@@ -215,11 +215,11 @@ function AdminLoanSubpage({ loans }) {
                         <div className="mt-3 grid grid-cols-2 gap-2 text-sm">
                             <div>
                                 <p className="text-gray-500">Amount</p>
-                                <p>${loan.amount.toLocaleString()}</p>
+                                <p>₱{parseInt(loan.amount).toLocaleString()}</p>
                             </div>
                             <div>
                                 <p className="text-gray-500">Interest</p>
-                                <p>{loan.interest}</p>
+                                <p>{loan.interest_rate}%</p>
                             </div>
                             <div>
                                 <p className="text-gray-500">Term</p>
@@ -227,7 +227,16 @@ function AdminLoanSubpage({ loans }) {
                             </div>
                             <div>
                                 <p className="text-gray-500">Due Date</p>
-                                <p>{loan.dueDate}</p>
+                                <p>
+                                    {new Date(loan.due_date).toLocaleDateString(
+                                        "en-US",
+                                        {
+                                            month: "short",
+                                            day: "numeric",
+                                            year: "numeric",
+                                        }
+                                    )}
+                                </p>
                             </div>
                         </div>
 

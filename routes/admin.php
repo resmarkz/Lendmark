@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\LoanController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -10,6 +12,11 @@ Route::get('/overview', function () {
 
 Route::get('/loans', [LoanController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard.admin.loans');
 
-Route::get('/manage-users', function () {
-    return Inertia::render('Dashboard/admin/manage-users/index');
-})->middleware(['auth', 'verified'])->name('dashboard.manage-users.loans');
+Route::middleware(['auth', 'verified'])
+    ->prefix('manage-users')
+    ->name('dashboard.manage-users.')
+    ->group(function () {
+        Route::get('/admins', [UserManagementController::class, 'viewAdmins'])->name('admins');
+        Route::get('/clients', [UserManagementController::class, 'viewClients'])->name('clients');
+        Route::get('/agents', [UserManagementController::class, 'viewAgents'])->name('agents');
+    });
