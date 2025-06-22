@@ -4,70 +4,34 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\UserManagementService;
 use Illuminate\Http\Request;
 
 class UserManagementController extends Controller
 {
+    protected $userService;
+    public function __construct(UserManagementService $userManagementService)
+    {
+        $this->userService = $userManagementService;
+    }
     public function viewAdmins()
     {
-        $admins = User::where('role', 'admin')
-            ->with('adminProfile')
-            ->orderBy('created_at', 'desc')
-            ->get()
-            ->map(function ($user) {
-                return [
-                    'id' => $user->id,
-                    'name' => $user->name,
-                    'email' => $user->email,
-                    'role' => $user->role,
-                    'admin_profile' => $user->adminProfile,
-                ];
-            });
-
         return inertia('Dashboard/admin/manage-users/admins/index', [
-            'admins' => $admins,
+            'admins' => $this->userService->getAdmins(),
         ]);
     }
 
     public  function viewAgents()
     {
-        $agents = User::where('role', 'agent')
-            ->with('agentProfile')
-            ->orderBy('created_at', 'desc')
-            ->get()
-            ->map(function ($user) {
-                return [
-                    'id' => $user->id,
-                    'name' => $user->name,
-                    'email' => $user->email,
-                    'role' => $user->role,
-                    'agent_profile' => $user->agentProfile,
-                ];
-            });
-
         return inertia('Dashboard/admin/manage-users/agents/index', [
-            'agents' => $agents,
+            'agents' => $this->userService->getAgents(),
         ]);
     }
 
     public function viewClients()
     {
-        $clients = User::where('role', 'client')
-            ->with('clientProfile')
-            ->orderBy('created_at', 'desc')
-            ->get()
-            ->map(function ($user) {
-                return [
-                    'id' => $user->id,
-                    'name' => $user->name,
-                    'email' => $user->email,
-                    'role' => $user->role,
-                    'client_profile' => $user->clientProfile,
-                ];
-            });
-
         return inertia('Dashboard/admin/manage-users/clients/index', [
-            'clients' => $clients,
+            'clients' => $this->userService->getClients(),
         ]);
     }
 }
