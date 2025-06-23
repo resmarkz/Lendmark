@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use Illuminate\Support\Arr;
 
 class UserManagementService
 {
@@ -35,5 +36,33 @@ class UserManagementService
             ->with('clientProfile')
             ->orderBy('created_at', 'desc')
             ->paginate($this->paginate);
+    }
+
+    public function addAdmin(array $data)
+    {
+        $user = User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => bcrypt($data['password']),
+            'role' => 'admin',
+        ]);
+
+        $user->adminProfile()->create([
+            'position' => $data['position'],
+            'permissions' => json_encode($data['permissions'] ?? []),
+        ]);
+
+        return $user;
+    }
+
+    public function getAvailablePermissions()
+    {
+        return [
+            'manage_users',
+            'manage_loans',
+            'manage_transactions',
+            'view_reports',
+            'system_settings'
+        ];
     }
 }

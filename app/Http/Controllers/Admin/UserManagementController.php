@@ -21,6 +21,35 @@ class UserManagementController extends Controller
         ]);
     }
 
+    public function viewCreateAdmin()
+    {
+        return inertia('Dashboard/admin/manage-users/admins/create', [
+            'availablePermissions' => [
+                'manage_users',
+                'manage_loans',
+                'manage_transactions',
+                'view_reports',
+                'system_settings'
+            ]
+        ]);
+    }
+
+    public function storeAdmin(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|confirmed|min:8',
+            'position' => 'required|string|max:255',
+            'permissions' => 'sometimes|array',
+        ]);
+
+        $this->userService->addAdmin($validated);
+
+        return redirect()->route('admin.manage-users.admins.index')
+            ->with('success', 'Admin created successfully');
+    }
+
     public  function viewAgents()
     {
         return inertia('Dashboard/admin/manage-users/agents/index', [

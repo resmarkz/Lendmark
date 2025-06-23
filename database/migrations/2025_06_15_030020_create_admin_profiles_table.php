@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('position')->nullable();
-            $table->json('permissions')->nullable(); // or use text if not JSON
+            $table->json('permissions')->nullable();
             $table->timestamps();
         });
     }

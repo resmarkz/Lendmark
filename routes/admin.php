@@ -12,11 +12,20 @@ Route::get('/overview', function () {
 
 Route::get('/loans', [LoanManagementController::class, 'viewLoans'])->middleware(['auth', 'verified'])->name('dashboard.admin.loans');
 
-Route::middleware(['auth'])
+Route::middleware(['auth', 'verified'])
     ->prefix('manage-users')
-    ->name('dashboard.manage-users.')
+    ->name('admin.manage-users.')
     ->group(function () {
-        Route::get('/admins', [UserManagementController::class, 'viewAdmins'])->name('admins');
-        Route::get('/clients', [UserManagementController::class, 'viewClients'])->name('clients');
-        Route::get('/agents', [UserManagementController::class, 'viewAgents'])->name('agents');
+        // Admins routes
+        Route::prefix('admins')->name('admins.')->group(function () {
+            Route::get('/', [UserManagementController::class, 'viewAdmins'])->name('index');
+            Route::get('/create', [UserManagementController::class, 'viewCreateAdmin'])->name('create');
+            Route::post('/', [UserManagementController::class, 'storeAdmin'])->name('store');
+        });
+
+        // Clients route
+        Route::get('/clients', [UserManagementController::class, 'viewClients'])->name('clients.index');
+
+        // Agents route
+        Route::get('/agents', [UserManagementController::class, 'viewAgents'])->name('agents.index');
     });
