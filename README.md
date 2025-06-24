@@ -1,80 +1,147 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 💼 LENDMARK – Lending Management System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p># Laravel + React (Inertia.js) + TailwindCSS Starter Template
+LENDMARK is a Laravel-based lending application designed to manage users, loan processing, payments, and role-based workflows. It supports referral-based loan assignments and tracks the entire lifecycle of a client's borrowing journey.
 
-This is a starter template repository combining **Laravel**, **React** (via Inertia.js), and **TailwindCSS** for building modern full-stack web applications with ease.
+---
 
-## 🚀 Tech Stack
+## 🚀 Features
 
--   [Laravel](https://laravel.com/) - PHP Framework for backend logic and routing
--   [React](https://reactjs.org/) - Frontend library for dynamic UI
--   [Inertia.js](https://inertiajs.com/) - Bridges Laravel and React
--   [TailwindCSS](https://tailwindcss.com/) - Utility-first CSS framework
+-   Role-based access: Admin, Agent, Client
+-   Agent referrals with custom referral codes
+-   Loan application, approval, and payment tracking
+-   Department and user profile management
+-   Responsive dashboard and clean architecture
 
-## 📦 Installation
+---
 
-1. **Clone the repository**
+## 🧑‍🤝‍🧑 User Roles & Permissions
 
-```bash
-git clone https://github.com/your-username/your-repo-name.git
-cd your-repo-name
+### 🛡️ Admin
 
+-   Manage users (Admins, Agents, Clients)
+-   Assign loans and departments
+-   View all loans and payments
+-   Configure system permissions
 
-## About Laravel
+### 🧑‍💼 Agent
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+-   Assigned by role: `telemarketer` or `collector`
+-   Manages assigned clients and loans
+-   Views payment schedules
+-   Works through referrals or admin assignments
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 👨‍💼 Client
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+-   Registers and applies for loans
+-   Can input referral code during sign-up or loan application
+-   Tracks loan status and makes payments
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 🔁 Workflow Overview
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+1. **Client signs up**, enters optional referral code.
+2. Referral is stored and linked to an `agent_profile`.
+3. Client applies for a loan.
+4. Loan is auto-assigned (via referral) or manually assigned by admin.
+5. Payments are scheduled and tracked.
+6. Collectors follow up on payments; telemarketers guide application flow.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## 🧩 Database Tables
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### `users`
 
-### Premium Partners
+-   `name`, `email`, `password`, `role`: admin | agent | client
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### `agent_profiles`
 
-## Contributing
+-   `user_id`, `referral_code` (unique), `contact_number`, `department_id`, `region`, `hired_at`, `notes`
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### `admin_profiles`
 
-## Code of Conduct
+-   `user_id`, `position`, `permissions` (JSON)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### `client_profiles`
 
-## Security Vulnerabilities
+-   `user_id`, `address`, `source_of_income`, `date_of_birth`, etc.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### `departments`
 
-## License
+-   `name`: TELEMARKETER | COLLECTIONS
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-```
+### `loans`
+
+-   `client_profile_id`, `amount`, `term`, `interest_rate`, `status`
+
+### `payments`
+
+-   `loan_id`, `due_date`, `paid_at`, `amount_paid`, `status`
+
+### `loan_assignments`
+
+-   `loan_id`, `agent_profile_id`, `role`: telemarketer | collector
+
+### `referrals`
+
+-   `referral_code` (FK to `agent_profiles`), `client_profile_id`
+
+---
+
+## ⚙️ Tech Stack
+
+-   **Backend**: Laravel 11+
+-   **Frontend**: React Inertia
+-   **Database**: MySQL
+-   **Auth**: Laravel Breeze
+-   **UI**: TailwindCSS
+
+---
+
+## 📂 Setup Instructions
+
+1. Clone the repository:
+
+    ```bash
+    git clone https://github.com/resmarkz/Lendmark.git
+    cd lendmark
+    ```
+
+2. Install dependencies:
+
+    ```bash
+    composer install
+    npm install && npm run dev
+    ```
+
+3. Setup environment:
+
+    ```bash
+    cp .env.example .env
+    php artisan key:generate
+    ```
+
+4. Run migrations:
+
+    ```bash
+    php artisan migrate
+    ```
+
+5. Seed initial data (optional):
+    ```bash
+    php artisan db:seed
+    ```
+
+---
+
+## 📌 License
+
+MIT License © 2025 LENDMARK Team
+
+---
+
+## ✍️ Notes
+
+-   This app is currently in development. Features are subject to change.
+-   Referral flow can be extended with tracking analytics, rewards, or performance metrics.
