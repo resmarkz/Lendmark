@@ -16,7 +16,7 @@ class AgentProfileSeeder extends Seeder
     public function run(): void
     {
         $agent = User::where('email', 'agent1@example.com')->first();
-        $department = Department::where('name', 'Telemarketer')->first();
+        $department = Department::where('name', 'TELEMARKETERS')->first();
 
         AgentProfile::create([
             'user_id' => $agent->id,

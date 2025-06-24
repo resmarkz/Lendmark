@@ -1,3 +1,4 @@
+import DeleteButton from "../DeleteButton";
 import Table from "./Table";
 import { Link } from "@inertiajs/react";
 
@@ -65,16 +66,13 @@ const AgentTable = ({ agents }) => {
                     >
                         <i className="fas fa-edit"></i>
                     </Link>
-                    <button
-                        className="text-red-600 hover:text-red-900"
-                        onClick={() =>
-                            confirm(
-                                "Are you sure you want to delete this agent?"
-                            )
-                        }
+                    <DeleteButton
+                        routeName="admin.manage-users.agents.destroy"
+                        itemId={agent.id}
+                        confirmText="Are you sure you want to delete this agent?"
                     >
                         <i className="fas fa-trash"></i>
-                    </button>
+                    </DeleteButton>
                 </div>
             </td>
         </>
@@ -149,16 +147,13 @@ const AgentTable = ({ agents }) => {
                         >
                             <i className="fas fa-edit"></i> Edit
                         </Link>
-                        <button
-                            className="text-red-600 hover:text-red-900"
-                            onClick={() =>
-                                confirm(
-                                    "Are you sure you want to delete this agent?"
-                                )
-                            }
+                        <DeleteButton
+                            routeName="admin.manage-users.agents.destroy"
+                            itemId={agent.id}
+                            confirmText="Are you sure you want to delete this agent?"
                         >
-                            <i className="fas fa-trash"></i> Delete
-                        </button>
+                            <i className="fas fa-trash"></i>
+                        </DeleteButton>
                     </div>
                 </div>
             </div>

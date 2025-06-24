@@ -10,8 +10,8 @@ class DepartmentSeeder extends Seeder
     public function run()
     {
         Department::insert([
-            ['name' => 'Telemarketer', 'description' => 'Handles loan outreach'],
-            ['name' => 'Collection', 'description' => 'Handles loan collections'],
+            ['name' => 'TELEMARKETERS', 'description' => 'Handles loan outreach'],
+            ['name' => 'COLLECTIONS', 'description' => 'Handles loan collections'],
         ]);
     }
 }

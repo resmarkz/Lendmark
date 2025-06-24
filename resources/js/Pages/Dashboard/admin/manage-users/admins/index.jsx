@@ -2,8 +2,11 @@ import DashboardLayout from "@/Layouts/DashboardLayout";
 import { Link } from "@inertiajs/react";
 import Pagination from "@/Components/Pagination/Pagination";
 import AdminTable from "@/Components/Tables/AdminTable";
+import { usePage } from "@inertiajs/react";
 
 const AdminManageAdminsSubpage = ({ admins }) => {
+    const { props } = usePage();
+    const currentAdminId = props.auth.user.id;
     return (
         <div className="space-y-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -21,7 +24,7 @@ const AdminManageAdminsSubpage = ({ admins }) => {
             </div>
 
             <div className="bg-white rounded-lg">
-                <AdminTable admins={admins} />
+                <AdminTable admins={admins} currentAdminId={currentAdminId} />
                 <Pagination links={admins.links} meta={admins.meta} />
             </div>
         </div>

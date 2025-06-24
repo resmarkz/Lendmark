@@ -1,7 +1,8 @@
+import DeleteButton from "../DeleteButton";
 import Table from "./Table";
 import { Link } from "@inertiajs/react";
 
-const AdminTable = ({ admins }) => {
+const AdminTable = ({ admins, currentAdminId }) => {
     const headers = [
         { label: "Name", className: "w-1/6" },
         { label: "Email", className: "w-1/6" },
@@ -75,16 +76,15 @@ const AdminTable = ({ admins }) => {
                     >
                         <i className="fas fa-edit"></i>
                     </Link>
-                    <button
-                        className="text-red-600 hover:text-red-900"
-                        onClick={() =>
-                            confirm(
-                                "Are you sure you want to delete this admin?"
-                            )
-                        }
-                    >
-                        <i className="fas fa-trash"></i>
-                    </button>
+                    {currentAdminId !== admin.id && (
+                        <DeleteButton
+                            routeName="admin.manage-users.admins.destroy"
+                            itemId={admin.id}
+                            confirmText="Are you sure you want to delete this admin???"
+                        >
+                            <i className="fas fa-trash"></i>
+                        </DeleteButton>
+                    )}
                 </div>
             </td>
         </>
@@ -155,16 +155,15 @@ const AdminTable = ({ admins }) => {
                         >
                             <i className="fas fa-edit"></i> Edit
                         </Link>
-                        <button
-                            className="text-red-600 hover:text-red-900"
-                            onClick={() =>
-                                confirm(
-                                    "Are you sure you want to delete this admin?"
-                                )
-                            }
-                        >
-                            <i className="fas fa-trash"></i> Delete
-                        </button>
+                        {currentAdminId !== admin.id && (
+                            <DeleteButton
+                                routeName="admin.manage-users.admins.destroy"
+                                itemId={admin.id}
+                                confirmText="Are you sure you want to delete this admin???"
+                            >
+                                <i className="fas fa-trash"></i>
+                            </DeleteButton>
+                        )}
                     </div>
                 </div>
             </div>
