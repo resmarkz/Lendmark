@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\UserManagementService;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -170,5 +171,80 @@ class UserManagementController extends Controller
         return inertia('Dashboard/admin/manage-users/clients/index', [
             'clients' => $this->userService->getClients(),
         ]);
+    }
+
+    public function viewCreateClient()
+    {
+        return inertia('Dashboard/admin/manage-users/clients/create');
+    }
+
+    public function storeClient(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|confirmed|min:8',
+            'address' => 'required|string|max:255',
+            'contact_number' => 'required|string|max:15',
+            'date_of_birth' => 'required|date',
+            'source_of_income' => 'required|string|max:255',
+        ]);
+
+
+        $this->userService->addClient($validated);
+
+        return redirect()->route('admin.manage-users.clients.index')
+            ->with('success', 'Client created successfully');
+    }
+
+    public function viewEditClient(User $client)
+    {
+        $client = [
+            'id' => $client->id,
+            'name' => $client->name,
+            'email' => $client->email,
+            'address' => $client->clientProfile->address ?? '',
+            'contact_number' => $client->clientProfile->contact_number ?? '',
+            'date_of_birth' => $client->clientProfile->date_of_birth ?? '',
+            'source_of_income' => $client->clientProfile->source_of_income ?? '',
+        ];
+
+        return inertia('Dashboard/admin/manage-users/clients/edit', [
+            'client' => $client
+        ]);
+    }
+
+    public function updateClient(Request $request, User $client)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|unique:users,email,' . $client->id,
+            'password' => 'nullable|string|confirmed|min:8',
+            'address' => 'required|string|max:255',
+            'contact_number' => 'required|string|max:15',
+            'date_of_birth' => 'required|date',
+            'source_of_income' => 'required|string|max:255',
+        ]);
+
+        $this->userService->updateClient($client, $validated);
+
+        return redirect()->route('admin.manage-users.clients.index')
+            ->with('success', 'Client updated successfully');
+    }
+
+    public function showClient(User $client)
+    {
+        $client->load('clientProfile');
+        return inertia('Dashboard/admin/manage-users/clients/show', [
+            'client' => $client
+        ]);
+    }
+
+    public function destroyClient(User $client)
+    {
+        $this->userService->deleteClient($client);
+
+        return redirect()->route('admin.manage-users.clients.index')
+            ->with('success', 'Client deleted successfully');
     }
 }

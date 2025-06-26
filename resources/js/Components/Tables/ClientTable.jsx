@@ -1,3 +1,4 @@
+import DeleteButton from "../DeleteButton";
 import Table from "./Table";
 import { Link } from "@inertiajs/react";
 
@@ -60,21 +61,27 @@ const ClientTable = ({ clients }) => {
             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                 <div className="flex items-center space-x-2 justify-end">
                     <Link
+                        href={`/dashboard/admin/manage-users/clients/${client.id}`}
+                        className="text-indigo-600 hover:text-indigo-900"
+                        title="View Details"
+                    >
+                        <i className="fas fa-eye"></i>
+                    </Link>
+                    <Link
                         href={`/dashboard/admin/manage-users/clients/${client.id}/edit`}
                         className="text-indigo-600 hover:text-indigo-900"
+                        title="Edit"
                     >
                         <i className="fas fa-edit"></i>
                     </Link>
-                    <button
-                        className="text-red-600 hover:text-red-900"
-                        onClick={() =>
-                            confirm(
-                                "Are you sure you want to delete this client?"
-                            )
-                        }
+                    <DeleteButton
+                        routeName="admin.manage-users.clients.destroy"
+                        itemId={client.id}
+                        confirmText="Are you sure you want to delete this client?"
+                        title="Delete"
                     >
                         <i className="fas fa-trash"></i>
-                    </button>
+                    </DeleteButton>
                 </div>
             </td>
         </>
@@ -144,21 +151,24 @@ const ClientTable = ({ clients }) => {
                 <div className="flex items-center justify-between pt-2">
                     <div className="flex space-x-3">
                         <Link
+                            href={`/dashboard/admin/manage-users/clients/${client.id}`}
+                            className="text-indigo-600 hover:text-indigo-900"
+                        >
+                            <i className="fas fa-eye mr-1"></i> View
+                        </Link>
+                        <Link
                             href={`/dashboard/admin/manage-users/clients/${client.id}/edit`}
                             className="text-indigo-600 hover:text-indigo-900"
                         >
-                            <i className="fas fa-edit"></i> Edit
+                            <i className="fas fa-edit mr-1"></i> Edit
                         </Link>
-                        <button
-                            className="text-red-600 hover:text-red-900"
-                            onClick={() =>
-                                confirm(
-                                    "Are you sure you want to delete this client?"
-                                )
-                            }
+                        <DeleteButton
+                            routeName="admin.manage-users.clients.destroy"
+                            itemId={client.id}
+                            confirmText="Are you sure you want to delete this client?"
                         >
-                            <i className="fas fa-trash"></i> Delete
-                        </button>
+                            <i className="fas fa-trash mr-1"></i> Delete
+                        </DeleteButton>
                     </div>
                 </div>
             </div>

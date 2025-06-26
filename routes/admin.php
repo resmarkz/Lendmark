@@ -29,11 +29,12 @@ Route::middleware(['auth', 'verified'])
         // Clients route
         Route::prefix('clients')->name('clients.')->group(function () {
             Route::get('/', [UserManagementController::class, 'viewClients'])->name('index');
-            // Route::get('/create', [UserManagementController::class, 'viewCreateClient'])->name('create');
-            // Route::post('/', [UserManagementController::class, 'storeClient'])->name('store');
-            // Route::get('/{client}/edit', [UserManagementController::class, 'viewEditClient'])->name('edit');
-            // Route::put('/{client}', [UserManagementController::class, 'updateClient'])->name('update');
-            // Route::delete('/{client}', [UserManagementController::class, 'destroyClient'])->name('destroy');
+            Route::get('/create', [UserManagementController::class, 'viewCreateClient'])->name('create');
+            Route::post('/', [UserManagementController::class, 'storeClient'])->name('store');
+            Route::get('/{client}/edit', [UserManagementController::class, 'viewEditClient'])->name('edit');
+            Route::put('/{client}', [UserManagementController::class, 'updateClient'])->name('update');
+            Route::get('/{client}', [UserManagementController::class, 'showClient'])->name('show');
+            Route::delete('/{client}', [UserManagementController::class, 'destroyClient'])->name('destroy');
         });
 
         // Agents route

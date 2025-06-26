@@ -84,6 +84,56 @@ class UserManagementService
             ->paginate($this->paginate);
     }
 
+    public function addClient(array $data)
+    {
+        $user = User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => bcrypt($data['password']),
+            'role' => 'client',
+        ]);
+
+        $user->clientProfile()->create([
+            'address' => $data['address'],
+            'contact_number' => $data['contact_number'],
+            'date_of_birth' => $data['date_of_birth'],
+            'source_of_income' => $data['source_of_income'],
+        ]);
+
+        return $user;
+    }
+
+    public function updateClient(User $client, array $data)
+    {
+        $client->update([
+            "name" => $data["name"],
+            "email" => $data["email"],
+
+            // Only update password if it was provided
+            'password' => $data['password'] ? bcrypt($data['password']) : $client->password
+        ]);
+
+        if ($client->clientProfile()) {
+            $client->clientProfile()->update([
+                'address' => $data['address'],
+                'contact_number' => $data['contact_number'],
+                'date_of_birth' => $data['date_of_birth'],
+                'source_of_income' => $data['source_of_income']
+            ]);
+        }
+
+        return $client;
+    }
+
+    public function deleteClient(User $client)
+    {
+        if ($client->clientProfile) {
+            $client->clientProfile->delete();
+        }
+
+        $client->delete();
+    }
+
     public function addAdmin(array $data)
     {
         $user = User::create([
