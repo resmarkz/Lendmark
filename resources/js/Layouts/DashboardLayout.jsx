@@ -3,43 +3,87 @@ import { Link, usePage } from "@inertiajs/react";
 
 function DashboardLayout({ children, auth }) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [userDropdownOpen, setUserDropdownOpen] = useState(false);
-    const [showUserTypes, setShowUserTypes] = useState(false);
+    const [openDropdowns, setOpenDropdowns] = useState({});
     const { url } = usePage();
     const user = auth.user;
 
     const sidebarLinks = [
         {
-            name: "Overview",
-            icon: "fas fa-tachometer-alt",
-            href: "/dashboard/admin/overview",
+            group: "Dashboard",
+            links: [
+                {
+                    name: "Overview",
+                    icon: "fas fa-tachometer-alt",
+                    href: "/dashboard/admin/overview",
+                },
+            ],
         },
         {
-            name: "Manage Users",
-            icon: "fas fa-users",
-            href: "/dashboard/admin/manage-users",
+            group: "Management",
+            links: [
+                {
+                    name: "Manage Users",
+                    icon: "fas fa-users",
+                    href: "/dashboard/admin/manage-users",
+                    subLinks: [
+                        {
+                            name: "Admins",
+                            icon: "fas fa-user-shield",
+                            href: "/dashboard/admin/manage-users/admins",
+                        },
+                        {
+                            name: "Agents",
+                            icon: "fas fa-user-tie",
+                            href: "/dashboard/admin/manage-users/agents",
+                        },
+                        {
+                            name: "Clients",
+                            icon: "fas fa-user-friends",
+                            href: "/dashboard/admin/manage-users/clients",
+                        },
+                    ],
+                },
+                {
+                    name: "Loans",
+                    icon: "fas fa-hand-holding-usd",
+                    href: "/dashboard/admin/loans",
+                },
+                {
+                    name: "Transactions",
+                    icon: "fas fa-exchange-alt",
+                    href: "/dashboard/admin/transactions",
+                },
+            ],
         },
         {
-            name: "Loans",
-            icon: "fas fa-hand-holding-usd",
-            href: "/dashboard/admin/loans",
-        },
-        {
-            name: "Transactions",
-            icon: "fas fa-exchange-alt",
-            href: "/dashboard/admin/transactions",
+            group: "Account",
+            links: [
+                { name: "Profile", icon: "fas fa-user", href: "/profile" },
+                { name: "Settings", icon: "fas fa-cog", href: "/settings" },
+                {
+                    name: "Sign out",
+                    icon: "fas fa-sign-out-alt",
+                    href: "/logout",
+                    method: "post",
+                    as: "button",
+                },
+            ],
         },
     ];
 
-    const accountLinks = [
-        { name: "Profile", icon: "fas fa-user", href: "/profile" },
-        { name: "Settings", icon: "fas fa-cog", href: "/settings" },
-        { name: "Sign out", icon: "fas fa-sign-out-alt", href: "/logout" },
-    ];
+    const toggleDropdown = (name) => {
+        setOpenDropdowns((prev) => ({
+            ...prev,
+            [name]: !prev[name],
+        }));
+    };
+
+    const isActiveLink = (href) => {
+        return url.startsWith(href);
+    };
 
     return (
         <div className="min-h-screen bg-gray-50 flex">
-            {/* Mobile sidebar overlay */}
             {sidebarOpen && (
                 <div
                     className="fixed inset-0 z-30 bg-black bg-opacity-50 lg:hidden"
@@ -47,7 +91,6 @@ function DashboardLayout({ children, auth }) {
                 ></div>
             )}
 
-            {/* Sidebar */}
             <div
                 className={`fixed inset-y-0 left-0 z-40 w-64 bg-white shadow-md transform transition-transform duration-200 ease-in-out ${
                     sidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -65,141 +108,126 @@ function DashboardLayout({ children, auth }) {
                     </button>
                 </div>
 
-                <div className="h-full overflow-y-auto py-4 space-y-6">
-                    <nav className="px-4 space-y-1">
-                        {sidebarLinks.map((link) => (
-                            <div key={link.name}>
-                                {link.name === "Manage Users" ? (
-                                    <div>
-                                        <button
-                                            onClick={() =>
-                                                setShowUserTypes(!showUserTypes)
-                                            }
-                                            className={`flex items-center justify-between w-full px-3 py-2 text-sm font-medium rounded-md ${
-                                                url.startsWith(link.href)
-                                                    ? "bg-indigo-50 text-indigo-700"
-                                                    : "text-gray-600 hover:text-indigo-600 hover:bg-indigo-50"
-                                            }`}
-                                        >
-                                            <div className="flex items-center">
-                                                <i
-                                                    className={`${
-                                                        link.icon
-                                                    } mr-3 ${
-                                                        url.startsWith(
-                                                            link.href
-                                                        )
-                                                            ? "text-indigo-500"
-                                                            : "text-gray-400"
-                                                    }`}
-                                                ></i>
-                                                {link.name}
-                                            </div>
-                                            <i
-                                                className={`fas fa-chevron-${
-                                                    showUserTypes
-                                                        ? "up"
-                                                        : "down"
-                                                } text-xs`}
-                                            ></i>
-                                        </button>
+                <div className="h-full overflow-y-auto py-4">
+                    <nav className="space-y-6">
+                        {sidebarLinks.map((group) => (
+                            <div key={group.group} className="space-y-1">
+                                <h3 className="px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                                    {group.group}
+                                </h3>
+                                <div className="mt-2 space-y-1">
+                                    {group.links.map((link) => (
+                                        <div key={link.name}>
+                                            {link.subLinks ? (
+                                                <div>
+                                                    <button
+                                                        onClick={() =>
+                                                            toggleDropdown(
+                                                                link.name
+                                                            )
+                                                        }
+                                                        className={`flex items-center justify-between w-full px-4 py-2.5 text-sm font-medium rounded-md ${
+                                                            isActiveLink(
+                                                                link.href
+                                                            )
+                                                                ? "bg-indigo-50 text-indigo-700"
+                                                                : "text-gray-600 hover:text-indigo-600 hover:bg-indigo-50"
+                                                        }`}
+                                                    >
+                                                        <div className="flex items-center">
+                                                            <i
+                                                                className={`${
+                                                                    link.icon
+                                                                } mr-3 ${
+                                                                    isActiveLink(
+                                                                        link.href
+                                                                    )
+                                                                        ? "text-indigo-500"
+                                                                        : "text-gray-400"
+                                                                }`}
+                                                            ></i>
+                                                            {link.name}
+                                                        </div>
+                                                        <i
+                                                            className={`fas fa-chevron-${
+                                                                openDropdowns[
+                                                                    link.name
+                                                                ]
+                                                                    ? "up"
+                                                                    : "down"
+                                                            } text-xs`}
+                                                        ></i>
+                                                    </button>
 
-                                        {showUserTypes && (
-                                            <div className="ml-8 mt-1 space-y-1">
+                                                    {openDropdowns[
+                                                        link.name
+                                                    ] && (
+                                                        <div className="ml-10 mt-1 space-y-1 pl-2 border-l-2 border-gray-100">
+                                                            {link.subLinks.map(
+                                                                (subLink) => (
+                                                                    <Link
+                                                                        key={
+                                                                            subLink.name
+                                                                        }
+                                                                        href={
+                                                                            subLink.href
+                                                                        }
+                                                                        className={`flex items-center px-4 py-2 text-sm rounded-md ${
+                                                                            isActiveLink(
+                                                                                subLink.href
+                                                                            )
+                                                                                ? "bg-indigo-100 text-indigo-700"
+                                                                                : "text-gray-600 hover:text-indigo-600 hover:bg-indigo-50"
+                                                                        }`}
+                                                                    >
+                                                                        <i
+                                                                            className={`${subLink.icon} mr-3 text-gray-400`}
+                                                                        ></i>
+                                                                        {
+                                                                            subLink.name
+                                                                        }
+                                                                    </Link>
+                                                                )
+                                                            )}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            ) : (
                                                 <Link
-                                                    href="/dashboard/admin/manage-users/admins"
-                                                    className={`flex items-center px-3 py-2 text-sm rounded-md ${
-                                                        url.includes("/admins")
-                                                            ? "bg-indigo-100 text-indigo-700"
+                                                    href={link.href}
+                                                    method={link.method}
+                                                    as={link.as}
+                                                    className={`flex items-center px-4 py-2.5 text-sm font-medium rounded-md ${
+                                                        isActiveLink(link.href)
+                                                            ? "bg-indigo-50 text-indigo-700"
                                                             : "text-gray-600 hover:text-indigo-600 hover:bg-indigo-50"
                                                     }`}
                                                 >
-                                                    <i className="fas fa-user-shield mr-3"></i>
-                                                    Admins
+                                                    <i
+                                                        className={`${
+                                                            link.icon
+                                                        } mr-3 ${
+                                                            isActiveLink(
+                                                                link.href
+                                                            )
+                                                                ? "text-indigo-500"
+                                                                : "text-gray-400"
+                                                        }`}
+                                                    ></i>
+                                                    {link.name}
                                                 </Link>
-                                                <Link
-                                                    href="/dashboard/admin/manage-users/clients"
-                                                    className={`flex items-center px-3 py-2 text-sm rounded-md ${
-                                                        url.includes("/clients")
-                                                            ? "bg-indigo-100 text-indigo-700"
-                                                            : "text-gray-600 hover:text-indigo-600 hover:bg-indigo-50"
-                                                    }`}
-                                                >
-                                                    <i className="fas fa-user-tie mr-3"></i>
-                                                    Clients
-                                                </Link>
-                                                <Link
-                                                    href="/dashboard/admin/manage-users/agents"
-                                                    className={`flex items-center px-3 py-2 text-sm rounded-md ${
-                                                        url.includes("/agents")
-                                                            ? "bg-indigo-100 text-indigo-700"
-                                                            : "text-gray-600 hover:text-indigo-600 hover:bg-indigo-50"
-                                                    }`}
-                                                >
-                                                    <i className="fas fa-user-cog mr-3"></i>
-                                                    Agents
-                                                </Link>
-                                            </div>
-                                        )}
-                                    </div>
-                                ) : (
-                                    <Link
-                                        href={link.href}
-                                        className={`flex items-center px-3 py-2 text-sm font-medium rounded-md ${
-                                            url.startsWith(link.href)
-                                                ? "bg-indigo-50 text-indigo-700"
-                                                : "text-gray-600 hover:text-indigo-600 hover:bg-indigo-50"
-                                        }`}
-                                    >
-                                        <i
-                                            className={`${link.icon} mr-3 ${
-                                                url.startsWith(link.href)
-                                                    ? "text-indigo-500"
-                                                    : "text-gray-400"
-                                            }`}
-                                        ></i>
-                                        {link.name}
-                                    </Link>
-                                )}
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         ))}
                     </nav>
-
-                    <div className="px-4">
-                        <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                            Account
-                        </h3>
-                        <div className="mt-1 space-y-1">
-                            {accountLinks.map((link) => (
-                                <Link
-                                    key={link.name}
-                                    href={link.href}
-                                    className={`flex items-center px-3 py-2 text-sm font-medium rounded-md ${
-                                        url.startsWith(link.href)
-                                            ? "bg-indigo-50 text-indigo-700"
-                                            : "text-gray-600 hover:text-indigo-600 hover:bg-indigo-50"
-                                    }`}
-                                >
-                                    <i
-                                        className={`${link.icon} mr-3 ${
-                                            url.startsWith(link.href)
-                                                ? "text-indigo-500"
-                                                : "text-gray-400"
-                                        }`}
-                                    ></i>
-                                    {link.name}
-                                </Link>
-                            ))}
-                        </div>
-                    </div>
                 </div>
             </div>
 
-            {/* Main Content Area */}
             <div className="flex-1 flex flex-col">
-                {/* Top Navbar */}
                 <header className="h-16 bg-white shadow-sm flex items-center justify-between px-4 sm:px-6 lg:px-8">
-                    {/* Sidebar Toggle Button */}
                     <button
                         type="button"
                         className="text-gray-400 lg:hidden"
@@ -208,19 +236,13 @@ function DashboardLayout({ children, auth }) {
                         <i className="fas fa-bars"></i>
                     </button>
 
-                    {/* App Name (Center) */}
-                    <div className="text-indigo-600 font-bold text-xl lg:hidden">
-                        LENDMARK
-                    </div>
+                    <div className="flex-1"></div>
 
-                    {/* User Info */}
-                    <div className="relative">
-                        <button
-                            onClick={() =>
-                                setUserDropdownOpen(!userDropdownOpen)
-                            }
-                            className="flex items-center text-sm rounded-full focus:outline-none"
-                        >
+                    <div className="flex items-center space-x-4">
+                        <button className="text-gray-500 hover:text-gray-700">
+                            <i className="fas fa-bell"></i>
+                        </button>
+                        <div className="flex items-center">
                             <div className="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center">
                                 <span className="text-indigo-600 font-medium">
                                     {user.name
@@ -230,44 +252,13 @@ function DashboardLayout({ children, auth }) {
                                         .toUpperCase()}
                                 </span>
                             </div>
-                            <span className="ml-2 text-gray-700 hidden sm:inline">
+                            <span className="ml-2 text-gray-700">
                                 {user.name}
                             </span>
-                            <i
-                                className={`fas fa-chevron-${
-                                    userDropdownOpen ? "up" : "down"
-                                } ml-1 text-gray-400`}
-                            ></i>
-                        </button>
-
-                        {userDropdownOpen && (
-                            <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white z-50">
-                                {accountLinks.map((link) => (
-                                    <Link
-                                        key={link.name}
-                                        href={link.href}
-                                        method={
-                                            link.name === "Sign out"
-                                                ? "post"
-                                                : undefined
-                                        }
-                                        as={
-                                            link.name === "Sign out"
-                                                ? "button"
-                                                : undefined
-                                        }
-                                        className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                    >
-                                        <i className={`${link.icon} mr-3`}></i>
-                                        {link.name}
-                                    </Link>
-                                ))}
-                            </div>
-                        )}
+                        </div>
                     </div>
                 </header>
 
-                {/* Main Content */}
                 <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50">
                     <div className="container max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                         <div className="bg-white p-6 rounded-lg shadow">
