@@ -3,19 +3,26 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreAdminRequest;
+use App\Http\Requests\Admin\UpdateAdminRequest;
+use App\Http\Requests\Agent\StoreAgentRequest;
+use App\Http\Requests\Agent\UpdateAgentRequest;
+use App\Http\Requests\Client\StoreClientRequest;
+use App\Http\Requests\Client\UpdateClientRequest;
 use App\Models\User;
 use App\Services\UserManagementService;
-use GuzzleHttp\Client;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UserManagementController extends Controller
 {
     protected $userService;
+
     public function __construct(UserManagementService $userManagementService)
     {
         $this->userService = $userManagementService;
     }
+
+    // Admin Methods
     public function viewAdmins()
     {
         return inertia('Dashboard/admin/manage-users/admins/index', [
@@ -26,27 +33,13 @@ class UserManagementController extends Controller
     public function viewCreateAdmin()
     {
         return inertia('Dashboard/admin/manage-users/admins/create', [
-            'availablePermissions' => [
-                'manage_users',
-                'manage_loans',
-                'manage_transactions',
-                'view_reports',
-                'system_settings'
-            ]
+            'availablePermissions' => $this->userService->getAvailablePermissions()
         ]);
     }
 
-    public function storeAdmin(Request $request)
+    public function storeAdmin(StoreAdminRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|confirmed|min:8',
-            'position' => 'required|string|max:255',
-            'permissions' => 'sometimes|array',
-        ]);
-
-        $this->userService->addAdmin($validated);
+        $this->userService->addAdmin($request->validated());
 
         return redirect()->route('admin.manage-users.admins.index')
             ->with('success', 'Admin created successfully');
@@ -55,27 +48,14 @@ class UserManagementController extends Controller
     public function viewEditAdmin(User $admin)
     {
         return inertia('Dashboard/admin/manage-users/admins/edit', [
-            'admin' => [
-                'id' => $admin->id,
-                'name' => $admin->name,
-                'email' => $admin->email,
-                'position' => $admin->adminProfile->position,
-                'permissions' => json_decode($admin->adminProfile->permissions, true) ?? [],
-            ],
+            'admin' => $this->userService->getAdminData($admin),
             'availablePermissions' => $this->userService->getAvailablePermissions()
         ]);
     }
 
-    public function updateAdmin(Request $request, User $admin)
+    public function updateAdmin(UpdateAdminRequest $request, User $admin)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $admin->id,
-            'position' => 'required|string|max:255',
-            'permissions' => 'sometimes|array',
-        ]);
-
-        $this->userService->updateAdmin($admin, $validated);
+        $this->userService->updateAdmin($admin, $request->validated());
 
         return redirect()->route('admin.manage-users.admins.index')
             ->with('success', 'Admin updated successfully');
@@ -94,7 +74,8 @@ class UserManagementController extends Controller
             ->with('success', 'Admin deleted successfully');
     }
 
-    public  function viewAgents()
+    // Agent Methods
+    public function viewAgents()
     {
         return inertia('Dashboard/admin/manage-users/agents/index', [
             'agents' => $this->userService->getAgents(),
@@ -103,59 +84,33 @@ class UserManagementController extends Controller
 
     public function viewCreateAgent()
     {
-        $departments = $this->userService->getDepartments();
         return inertia('Dashboard/admin/manage-users/agents/create', [
-            'departments' => $departments,
+            'departments' => $this->userService->getDepartments(),
         ]);
+    }
+
+    public function storeAgent(StoreAgentRequest $request)
+    {
+        $this->userService->addAgent($request->validated());
+
+        return redirect()->route('admin.manage-users.agents.index')
+            ->with('success', 'Agent created successfully');
     }
 
     public function viewEditAgent(User $agent)
     {
-        $departments = $this->userService->getDepartments();
         return inertia('Dashboard/admin/manage-users/agents/edit', [
-            'agent' => [
-                'id' => $agent->id,
-                'name' => $agent->name,
-                'email' => $agent->email,
-                'department_id' => $agent->agentProfile->department_id ?? null,
-                'contact_number' => $agent->agentProfile->contact_number ?? null,
-                'date_of_birth' => $agent->agentProfile->date_of_birth ?? null,
-            ],
-            'departments' => $departments,
+            'agent' => $this->userService->getAgentData($agent),
+            'departments' => $this->userService->getDepartments(),
         ]);
     }
 
-    public function updateAgent(Request $request, User $agent)
+    public function updateAgent(UpdateAgentRequest $request, User $agent)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $agent->id,
-            'department_id' => 'required|exists:departments,id',
-            'contact_number' => 'required|string|max:15',
-            'date_of_birth' => 'required|date',
-        ]);
-
-        $this->userService->updateAgent($agent, $validated);
+        $this->userService->updateAgent($agent, $request->validated());
 
         return redirect()->route('admin.manage-users.agents.index')
             ->with('success', 'Agent updated successfully');
-    }
-
-    public function storeAgent(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|confirmed|min:8',
-            'department_id' => 'required|exists:departments,id',
-            'contact_number' => 'required|string|max:15',
-            'date_of_birth' => 'required|date',
-        ]);
-
-        $this->userService->addAgent($validated);
-
-        return redirect()->route('admin.manage-users.agents.index')
-            ->with('success', 'Agent created successfully');
     }
 
     public function destroyAgent(User $agent)
@@ -166,6 +121,7 @@ class UserManagementController extends Controller
             ->with('success', 'Agent deleted successfully');
     }
 
+    // Client Methods
     public function viewClients()
     {
         return inertia('Dashboard/admin/manage-users/clients/index', [
@@ -178,20 +134,9 @@ class UserManagementController extends Controller
         return inertia('Dashboard/admin/manage-users/clients/create');
     }
 
-    public function storeClient(Request $request)
+    public function storeClient(StoreClientRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|confirmed|min:8',
-            'address' => 'required|string|max:255',
-            'contact_number' => 'required|string|max:15',
-            'date_of_birth' => 'required|date',
-            'source_of_income' => 'required|string|max:255',
-        ]);
-
-
-        $this->userService->addClient($validated);
+        $this->userService->addClient($request->validated());
 
         return redirect()->route('admin.manage-users.clients.index')
             ->with('success', 'Client created successfully');
@@ -199,34 +144,14 @@ class UserManagementController extends Controller
 
     public function viewEditClient(User $client)
     {
-        $client = [
-            'id' => $client->id,
-            'name' => $client->name,
-            'email' => $client->email,
-            'address' => $client->clientProfile->address ?? '',
-            'contact_number' => $client->clientProfile->contact_number ?? '',
-            'date_of_birth' => $client->clientProfile->date_of_birth ?? '',
-            'source_of_income' => $client->clientProfile->source_of_income ?? '',
-        ];
-
         return inertia('Dashboard/admin/manage-users/clients/edit', [
-            'client' => $client
+            'client' => $this->userService->getClientData($client)
         ]);
     }
 
-    public function updateClient(Request $request, User $client)
+    public function updateClient(UpdateClientRequest $request, User $client)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|unique:users,email,' . $client->id,
-            'password' => 'nullable|string|confirmed|min:8',
-            'address' => 'required|string|max:255',
-            'contact_number' => 'required|string|max:15',
-            'date_of_birth' => 'required|date',
-            'source_of_income' => 'required|string|max:255',
-        ]);
-
-        $this->userService->updateClient($client, $validated);
+        $this->userService->updateClient($client, $request->validated());
 
         return redirect()->route('admin.manage-users.clients.index')
             ->with('success', 'Client updated successfully');
@@ -234,9 +159,8 @@ class UserManagementController extends Controller
 
     public function showClient(User $client)
     {
-        $client->load('clientProfile');
         return inertia('Dashboard/admin/manage-users/clients/show', [
-            'client' => $client
+            'client' => $this->userService->getClientDetails($client)
         ]);
     }
 

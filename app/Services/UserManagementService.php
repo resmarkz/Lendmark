@@ -177,6 +177,48 @@ class UserManagementService
         $admin->delete();
     }
 
+    public function getAdminData(User $admin)
+    {
+        return [
+            'id' => $admin->id,
+            'name' => $admin->name,
+            'email' => $admin->email,
+            'position' => $admin->adminProfile->position,
+            'permissions' => json_decode($admin->adminProfile->permissions, true) ?? [],
+        ];
+    }
+
+    public function getAgentData(User $agent)
+    {
+        return [
+            'id' => $agent->id,
+            'name' => $agent->name,
+            'email' => $agent->email,
+            'department_id' => $agent->agentProfile->department_id ?? null,
+            'contact_number' => $agent->agentProfile->contact_number ?? null,
+            'date_of_birth' => $agent->agentProfile->date_of_birth ?? null,
+        ];
+    }
+
+    public function getClientData(User $client)
+    {
+        return [
+            'id' => $client->id,
+            'name' => $client->name,
+            'email' => $client->email,
+            'address' => $client->clientProfile->address ?? '',
+            'contact_number' => $client->clientProfile->contact_number ?? '',
+            'date_of_birth' => $client->clientProfile->date_of_birth ?? '',
+            'source_of_income' => $client->clientProfile->source_of_income ?? '',
+        ];
+    }
+
+    public function getClientDetails(User $client)
+    {
+        $client->load('clientProfile');
+        return $client;
+    }
+
     public function getAvailablePermissions()
     {
         return [
