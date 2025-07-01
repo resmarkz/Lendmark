@@ -3,9 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\AdminProfile;
-use App\Models\AgentProfile;
+use App\Models\CollectorProfile;
 use App\Models\ClientProfile;
-use App\Models\Department;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -20,7 +19,7 @@ class UserSeeder extends Seeder
     {
         User::insert([
             ['name' => 'Admin User', 'email' => 'admin@example.com', 'password' => Hash::make('password'), 'role' => 'admin'],
-            ['name' => 'Agent One', 'email' => 'agent1@example.com', 'password' => Hash::make('password'), 'role' => 'agent'],
+            ['name' => 'Collector One', 'email' => 'collector1@example.com', 'password' => Hash::make('password'), 'role' => 'collector'],
             ['name' => 'Client User', 'email' => 'client@example.com', 'password' => Hash::make('password'), 'role' => 'client'],
         ]);
     }

@@ -19,7 +19,6 @@ class AdminProfileSeeder extends Seeder
         AdminProfile::create([
             'user_id' => $admin->id,
             'position' => 'Super Admin',
-            'permissions' => json_encode(['manage_users', 'view_reports']),
         ]);
     }
 }

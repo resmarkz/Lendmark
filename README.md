@@ -45,7 +45,7 @@ LENDMARK is a Laravel-based lending application designed to manage users, loan p
 3. Client applies for a loan.
 4. Loan is auto-assigned (via referral) or manually assigned by admin.
 5. Payments are scheduled and tracked.
-6. Collectors follow up on payments; telemarketers guide application flow.
+6. Collectors follow up on payments.
 
 ---
 
@@ -61,7 +61,7 @@ LENDMARK is a Laravel-based lending application designed to manage users, loan p
 
 ### `admin_profiles`
 
--   `user_id`, `position`, `permissions` (JSON)
+-   `user_id`, `position`
 
 ### `client_profiles`
 

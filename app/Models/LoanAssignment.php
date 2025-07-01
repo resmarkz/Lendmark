@@ -11,8 +11,7 @@ class LoanAssignment extends Model
 
     protected $fillable = [
         'loan_id',
-        'agent_profile_id',
-        'role', // telemarketer or collector
+        'collector_profile_id',
     ];
 
     public function loan()
@@ -20,8 +19,8 @@ class LoanAssignment extends Model
         return $this->belongsTo(Loan::class);
     }
 
-    public function agentProfile()
+    public function collectorProfile()
     {
-        return $this->belongsTo(AgentProfile::class);
+        return $this->belongsTo(CollectorProfile::class);
     }
 }

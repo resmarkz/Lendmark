@@ -1,30 +1,15 @@
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import { useForm, Link } from "@inertiajs/react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
-const AdminManageAdminCreate = ({ availablePermissions, auth }) => {
+const AdminManageAdminCreate = ({ auth }) => {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: "",
         email: "",
         password: "",
         password_confirmation: "",
         position: "",
-        permissions: [],
     });
-
-    const [selectedPermissions, setSelectedPermissions] = useState([]);
-
-    useEffect(() => {
-        setData("permissions", selectedPermissions);
-    }, [selectedPermissions]);
-
-    const handlePermissionToggle = (permission) => {
-        setSelectedPermissions((prev) =>
-            prev.includes(permission)
-                ? prev.filter((p) => p !== permission)
-                : [...prev, permission]
-        );
-    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -169,88 +154,7 @@ const AdminManageAdminCreate = ({ availablePermissions, auth }) => {
                             />
                         </div>
 
-                        {/* Position Field */}
-                        <div>
-                            <label
-                                htmlFor="position"
-                                className="block text-sm font-medium text-gray-700"
-                            >
-                                Position
-                            </label>
-                            <input
-                                type="text"
-                                id="position"
-                                value={data.position}
-                                onChange={(e) =>
-                                    setData("position", e.target.value)
-                                }
-                                className={`mt-1 block w-full rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm ${
-                                    errors.position
-                                        ? "border-red-500"
-                                        : "border-gray-300"
-                                }`}
-                            />
-                            {errors.position && (
-                                <p className="mt-1 text-sm text-red-600">
-                                    {errors.position}
-                                </p>
-                            )}
-                        </div>
-                    </div>
-
-                    {/* Permissions Section */}
-                    <div>
-                        <h3 className="text-sm font-medium text-gray-700 mb-2">
-                            Permissions
-                        </h3>
-                        {availablePermissions?.length > 0 ? (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
-                                {availablePermissions.map((permission) => (
-                                    <div
-                                        key={permission}
-                                        className="flex items-center"
-                                    >
-                                        <input
-                                            type="checkbox"
-                                            id={`permission-${permission}`}
-                                            checked={selectedPermissions.includes(
-                                                permission
-                                            )}
-                                            onChange={() =>
-                                                handlePermissionToggle(
-                                                    permission
-                                                )
-                                            }
-                                            className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                        />
-                                        <label
-                                            htmlFor={`permission-${permission}`}
-                                            className="ml-2 block text-sm text-gray-700"
-                                        >
-                                            {permission
-                                                .split("_")
-                                                .map(
-                                                    (word) =>
-                                                        word
-                                                            .charAt(0)
-                                                            .toUpperCase() +
-                                                        word.slice(1)
-                                                )
-                                                .join(" ")}
-                                        </label>
-                                    </div>
-                                ))}
-                            </div>
-                        ) : (
-                            <p className="text-sm text-gray-500">
-                                No permissions available
-                            </p>
-                        )}
-                        {errors.permissions && (
-                            <p className="mt-1 text-sm text-red-600">
-                                {errors.permissions}
-                            </p>
-                        )}
+                        
                     </div>
 
                     {/* Form Actions */}

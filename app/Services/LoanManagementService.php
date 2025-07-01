@@ -8,7 +8,7 @@ class LoanManagementService
 {
     public function getLoans()
     {
-        $loans = Loan::with(['clientProfile', 'payments', 'loanAssignments.agentProfile'])
+        $loans = Loan::with(['clientProfile', 'payments', 'loanAssignments.collectorProfile'])
             ->orderBy('created_at', 'desc')
             ->paginate(10)
             ->through(function ($loan) {
@@ -24,8 +24,7 @@ class LoanManagementService
                     'payments' => $loan->payments,
                     'assignments' => $loan->loanAssignments->map(function ($assignment) {
                         return [
-                            'agent_name' => $assignment->agentProfile ? $assignment->agentProfile->name : null,
-                            'role' => $assignment->role,
+                            'collector_name' => $assignment->collectorProfile ? $assignment->collectorProfile->name : null,
                         ];
                     }),
                 ];

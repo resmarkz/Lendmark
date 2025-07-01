@@ -1,21 +1,21 @@
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import { useForm, Link } from "@inertiajs/react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
-const AdminManageAgentsEdit = ({ agent, departments, auth }) => {
-    const { data, setData, put, processing, errors, reset } = useForm({
-        name: agent.name || "",
-        email: agent.email || "",
+const AdminManageCollectorsCreate = ({ auth }) => {
+    const { data, setData, post, processing, errors, reset } = useForm({
+        name: "",
+        email: "",
         password: "",
         password_confirmation: "",
-        department_id: agent.department_id || "",
-        contact_number: agent.contact_number || "",
-        date_of_birth: agent.date_of_birth || "",
+        contact_number: "",
+        date_of_birth: "",
     });
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        put(route("admin.manage-users.agents.update", agent.id), {
+        post(route("admin.manage-users.collectors.store"), {
+            onSuccess: () => reset(),
             preserveScroll: true,
         });
     };
@@ -23,14 +23,16 @@ const AdminManageAgentsEdit = ({ agent, departments, auth }) => {
     return (
         <div className="space-y-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                <h2 className="text-2xl font-bold text-gray-800">Edit Agent</h2>
+                <h2 className="text-2xl font-bold text-gray-800">
+                    Add New Collector
+                </h2>
                 <div className="flex gap-3">
                     <Link
-                        href={route("admin.manage-users.agents.index")}
+                        href={route("admin.manage-users.collectors.index")}
                         className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
                         <i className="fas fa-arrow-left mr-2"></i> Back to
-                        Agents
+                        Collectors
                     </Link>
                 </div>
             </div>
@@ -104,10 +106,7 @@ const AdminManageAgentsEdit = ({ agent, departments, auth }) => {
                                 htmlFor="password"
                                 className="block text-sm font-medium text-gray-700"
                             >
-                                Password{" "}
-                                <span className="text-gray-400">
-                                    (leave blank to keep current)
-                                </span>
+                                Password <span className="text-red-500">*</span>
                             </label>
                             <input
                                 type="password"
@@ -121,8 +120,8 @@ const AdminManageAgentsEdit = ({ agent, departments, auth }) => {
                                         ? "border-red-500"
                                         : "border-gray-300"
                                 }`}
+                                required
                                 minLength="8"
-                                autoComplete="new-password"
                             />
                             {errors.password && (
                                 <p className="mt-1 text-sm text-red-600">
@@ -137,7 +136,8 @@ const AdminManageAgentsEdit = ({ agent, departments, auth }) => {
                                 htmlFor="password_confirmation"
                                 className="block text-sm font-medium text-gray-700"
                             >
-                                Confirm Password
+                                Confirm Password{" "}
+                                <span className="text-red-500">*</span>
                             </label>
                             <input
                                 type="password"
@@ -150,45 +150,9 @@ const AdminManageAgentsEdit = ({ agent, departments, auth }) => {
                                     )
                                 }
                                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border"
-                                minLength="8"
-                                autoComplete="new-password"
-                            />
-                        </div>
-
-                        {/* Department Field */}
-                        <div>
-                            <label
-                                htmlFor="department_id"
-                                className="block text-sm font-medium text-gray-700"
-                            >
-                                Department{" "}
-                                <span className="text-red-500">*</span>
-                            </label>
-                            <select
-                                id="department_id"
-                                value={data.department_id}
-                                onChange={(e) =>
-                                    setData("department_id", e.target.value)
-                                }
-                                className={`mt-1 block w-full rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm ${
-                                    errors.department_id
-                                        ? "border-red-500"
-                                        : "border-gray-300"
-                                }`}
                                 required
-                            >
-                                <option value="">Select Department</option>
-                                {departments?.map((dept) => (
-                                    <option key={dept.id} value={dept.id}>
-                                        {dept.name}
-                                    </option>
-                                ))}
-                            </select>
-                            {errors.department_id && (
-                                <p className="mt-1 text-sm text-red-600">
-                                    {errors.department_id}
-                                </p>
-                            )}
+                                minLength="8"
+                            />
                         </div>
 
                         {/* Contact Number */}
@@ -262,12 +226,12 @@ const AdminManageAgentsEdit = ({ agent, departments, auth }) => {
                             {processing ? (
                                 <>
                                     <i className="fas fa-spinner fa-spin mr-2"></i>
-                                    Saving...
+                                    Creating...
                                 </>
                             ) : (
                                 <>
                                     <i className="fas fa-save mr-2"></i>
-                                    Update Agent
+                                    Create Collector
                                 </>
                             )}
                         </button>
@@ -278,8 +242,8 @@ const AdminManageAgentsEdit = ({ agent, departments, auth }) => {
     );
 };
 
-AdminManageAgentsEdit.layout = (page) => (
+AdminManageCollectorsCreate.layout = (page) => (
     <DashboardLayout children={page} auth={page.props.auth} />
 );
 
-export default AdminManageAgentsEdit;
+export default AdminManageCollectorsCreate;

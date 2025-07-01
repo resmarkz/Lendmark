@@ -6,8 +6,7 @@ const AdminTable = ({ admins, currentAdminId }) => {
     const headers = [
         { label: "Name", className: "w-1/6" },
         { label: "Email", className: "w-1/6" },
-        { label: "Position", className: "w-1/6" },
-        { label: "Permissions", className: "w-1/3" },
+        
         { label: "Status", className: "w-1/12" },
         { label: "Actions", className: "w-1/12 text-right" },
     ];
@@ -38,31 +37,7 @@ const AdminTable = ({ admins, currentAdminId }) => {
             <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm text-gray-900">{admin.email}</div>
             </td>
-            <td className="px-6 py-4 whitespace-nowrap">
-                <div className="text-sm text-gray-900">
-                    {admin.admin_profile?.position || "N/A"}
-                </div>
-            </td>
-            <td className="px-6 py-4">
-                <div className="flex flex-wrap gap-1">
-                    {admin.admin_profile?.permissions ? (
-                        JSON.parse(admin.admin_profile.permissions).map(
-                            (permission) => (
-                                <span
-                                    key={permission}
-                                    className="px-2 py-1 text-xs rounded-full bg-indigo-100 text-indigo-800"
-                                >
-                                    {permission.split("_").join(" ")}
-                                </span>
-                            )
-                        )
-                    ) : (
-                        <span className="text-gray-500 text-sm">
-                            No permissions
-                        </span>
-                    )}
-                </div>
-            </td>
+            
             <td className="px-6 py-4 whitespace-nowrap">
                 <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                     Active
@@ -111,38 +86,7 @@ const AdminTable = ({ admins, currentAdminId }) => {
             </div>
 
             <div className="mt-3 space-y-2">
-                <div className="flex justify-between">
-                    <span className="text-sm font-medium text-gray-500">
-                        Position:
-                    </span>
-                    <span className="text-sm">
-                        {admin.admin_profile?.position || "N/A"}
-                    </span>
-                </div>
-
-                <div>
-                    <span className="text-sm font-medium text-gray-500">
-                        Permissions:
-                    </span>
-                    <div className="flex flex-wrap gap-1 mt-1">
-                        {admin.admin_profile?.permissions ? (
-                            JSON.parse(admin.admin_profile.permissions).map(
-                                (permission) => (
-                                    <span
-                                        key={permission}
-                                        className="px-2 py-1 text-xs rounded-full bg-indigo-100 text-indigo-800"
-                                    >
-                                        {permission.split("_").join(" ")}
-                                    </span>
-                                )
-                            )
-                        ) : (
-                            <span className="text-gray-500 text-sm">
-                                No permissions
-                            </span>
-                        )}
-                    </div>
-                </div>
+                
 
                 <div className="flex items-center justify-between pt-2">
                     <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">

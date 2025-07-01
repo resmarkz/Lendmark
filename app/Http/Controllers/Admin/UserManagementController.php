@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreAdminRequest;
 use App\Http\Requests\Admin\UpdateAdminRequest;
-use App\Http\Requests\Agent\StoreAgentRequest;
-use App\Http\Requests\Agent\UpdateAgentRequest;
+use App\Http\Requests\Collector\StoreCollectorRequest;
+use App\Http\Requests\Collector\UpdateCollectorRequest;
 use App\Http\Requests\Client\StoreClientRequest;
 use App\Http\Requests\Client\UpdateClientRequest;
 use App\Models\User;
@@ -32,9 +32,7 @@ class UserManagementController extends Controller
 
     public function viewCreateAdmin()
     {
-        return inertia('Dashboard/admin/manage-users/admins/create', [
-            'availablePermissions' => $this->userService->getAvailablePermissions()
-        ]);
+        return inertia('Dashboard/admin/manage-users/admins/create');
     }
 
     public function storeAdmin(StoreAdminRequest $request)
@@ -49,7 +47,7 @@ class UserManagementController extends Controller
     {
         return inertia('Dashboard/admin/manage-users/admins/edit', [
             'admin' => $this->userService->getAdminData($admin),
-            'availablePermissions' => $this->userService->getAvailablePermissions()
+            
         ]);
     }
 
@@ -74,51 +72,48 @@ class UserManagementController extends Controller
             ->with('success', 'Admin deleted successfully');
     }
 
-    // Agent Methods
-    public function viewAgents()
+    // Collector Methods
+    public function viewCollectors()
     {
-        return inertia('Dashboard/admin/manage-users/agents/index', [
-            'agents' => $this->userService->getAgents(),
+        return inertia('Dashboard/admin/manage-users/collectors/index', [
+            'collectors' => $this->userService->getCollectors(),
         ]);
     }
 
-    public function viewCreateAgent()
+    public function viewCreateCollector()
     {
-        return inertia('Dashboard/admin/manage-users/agents/create', [
-            'departments' => $this->userService->getDepartments(),
+        return inertia('Dashboard/admin/manage-users/collectors/create');
+    }
+
+    public function storeCollector(StoreCollectorRequest $request)
+    {
+        $this->userService->addCollector($request->validated());
+
+        return redirect()->route('admin.manage-users.collectors.index')
+            ->with('success', 'Collector created successfully');
+    }
+
+    public function viewEditCollector(User $collector)
+    {
+        return inertia('Dashboard/admin/manage-users/collectors/edit', [
+            'collector' => $this->userService->getCollectorData($collector),
         ]);
     }
 
-    public function storeAgent(StoreAgentRequest $request)
+    public function updateCollector(UpdateCollectorRequest $request, User $collector)
     {
-        $this->userService->addAgent($request->validated());
+        $this->userService->updateCollector($collector, $request->validated());
 
-        return redirect()->route('admin.manage-users.agents.index')
-            ->with('success', 'Agent created successfully');
+        return redirect()->route('admin.manage-users.collectors.index')
+            ->with('success', 'Collector updated successfully');
     }
 
-    public function viewEditAgent(User $agent)
+    public function destroyCollector(User $collector)
     {
-        return inertia('Dashboard/admin/manage-users/agents/edit', [
-            'agent' => $this->userService->getAgentData($agent),
-            'departments' => $this->userService->getDepartments(),
-        ]);
-    }
+        $this->userService->deleteCollector($collector);
 
-    public function updateAgent(UpdateAgentRequest $request, User $agent)
-    {
-        $this->userService->updateAgent($agent, $request->validated());
-
-        return redirect()->route('admin.manage-users.agents.index')
-            ->with('success', 'Agent updated successfully');
-    }
-
-    public function destroyAgent(User $agent)
-    {
-        $this->userService->deleteAgent($agent);
-
-        return redirect()->route('admin.manage-users.agents.index')
-            ->with('success', 'Agent deleted successfully');
+        return redirect()->route('admin.manage-users.collectors.index')
+            ->with('success', 'Collector deleted successfully');
     }
 
     // Client Methods

@@ -21,10 +21,9 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
-            DepartmentSeeder::class,
             UserSeeder::class,
             AdminProfileSeeder::class,
-            AgentProfileSeeder::class,
+            CollectorProfileSeeder::class,
             ClientProfileSeeder::class,
             ContactReferenceSeeder::class,
             LoanSeeder::class,

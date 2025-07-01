@@ -51,9 +51,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(ClientProfile::class);
     }
-    public function agentProfile()
+    public function collectorProfile()
     {
-        return $this->hasOne(AgentProfile::class);
+        return $this->hasOne(CollectorProfile::class);
     }
     public function adminProfile()
     {

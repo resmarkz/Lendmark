@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Department;
 use App\Models\User;
 use Illuminate\Support\Arr;
 
@@ -23,25 +22,24 @@ class UserManagementService
             ->paginate($this->paginate);
     }
 
-    public function getAgents()
+    public function getCollectors()
     {
-        return User::where('role', 'agent')
-            ->with('agentProfile', 'agentProfile.department')
+        return User::where('role', 'collector')
+            ->with('collectorProfile')
             ->orderBy('created_at', 'desc')
             ->paginate($this->paginate);
     }
 
-    public function addAgent(array $data)
+    public function addCollector(array $data)
     {
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-            'role' => 'agent',
+            'role' => 'collector',
         ]);
 
-        $user->agentProfile()->create([
-            'department_id' => $data['department_id'],
+        $user->collectorProfile()->create([
             'contact_number' => $data['contact_number'],
             'date_of_birth' => $data['date_of_birth'],
         ]);
@@ -49,31 +47,30 @@ class UserManagementService
         return $user;
     }
 
-    public function updateAgent(User $agent, array $data)
+    public function updateCollector(User $collector, array $data)
     {
-        $agent->update([
+        $collector->update([
             'name' => $data['name'],
             'email' => $data['email'],
         ]);
 
-        if ($agent->agentProfile) {
-            $agent->agentProfile->update([
-                'department_id' => $data['department_id'],
+        if ($collector->collectorProfile) {
+            $collector->collectorProfile->update([
                 'contact_number' => $data['contact_number'],
                 'date_of_birth' => $data['date_of_birth'],
             ]);
         }
 
-        return $agent;
+        return $collector;
     }
 
-    public function deleteAgent(User $agent)
+    public function deleteCollector(User $collector)
     {
-        if ($agent->agentProfile) {
-            $agent->agentProfile->delete();
+        if ($collector->collectorProfile) {
+            $collector->collectorProfile->delete();
         }
 
-        $agent->delete();
+        $collector->delete();
     }
 
     public function getClients()
@@ -143,27 +140,19 @@ class UserManagementService
             'role' => 'admin',
         ]);
 
-        $user->adminProfile()->create([
-            'position' => $data['position'],
-            'permissions' => json_encode($data['permissions'] ?? []),
-        ]);
+        $user->adminProfile()->create([]);
 
         return $user;
     }
 
     public function updateAdmin(User $admin, array $data)
     {
-        $data['permissions'] = $this->cleanPermissions($data['permissions'] ?? []);
-
         $admin->update([
             'name' => $data['name'],
             'email' => $data['email'],
         ]);
 
-        $admin->adminProfile()->update([
-            'position' => $data['position'],
-            'permissions' => json_encode($data['permissions']),
-        ]);
+        
 
         return $admin;
     }
@@ -184,19 +173,17 @@ class UserManagementService
             'name' => $admin->name,
             'email' => $admin->email,
             'position' => $admin->adminProfile->position,
-            'permissions' => json_decode($admin->adminProfile->permissions, true) ?? [],
         ];
     }
 
-    public function getAgentData(User $agent)
+    public function getCollectorData(User $collector)
     {
         return [
-            'id' => $agent->id,
-            'name' => $agent->name,
-            'email' => $agent->email,
-            'department_id' => $agent->agentProfile->department_id ?? null,
-            'contact_number' => $agent->agentProfile->contact_number ?? null,
-            'date_of_birth' => $agent->agentProfile->date_of_birth ?? null,
+            'id' => $collector->id,
+            'name' => $collector->name,
+            'email' => $collector->email,
+            'contact_number' => $collector->collectorProfile->contact_number ?? null,
+            'date_of_birth' => $collector->collectorProfile->date_of_birth ?? null,
         ];
     }
 
@@ -217,29 +204,5 @@ class UserManagementService
     {
         $client->load('clientProfile');
         return $client;
-    }
-
-    public function getAvailablePermissions()
-    {
-        return [
-            'manage_users',
-            'manage_loans',
-            'manage_transactions',
-            'view_reports',
-            'system_settings'
-        ];
-    }
-
-    public function getDepartments()
-    {
-        return Department::all();
-    }
-
-    protected function cleanPermissions(array $permissions): array
-    {
-        return array_values(array_filter(
-            $permissions,
-            fn($permission) => !is_null($permission) && $permission !== ''
-        ));
     }
 }

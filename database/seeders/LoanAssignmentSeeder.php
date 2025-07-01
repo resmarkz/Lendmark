@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\AgentProfile;
+use App\Models\CollectorProfile;
 use App\Models\Loan;
 use App\Models\LoanAssignment;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -16,12 +16,11 @@ class LoanAssignmentSeeder extends Seeder
     public function run(): void
     {
         $loan = Loan::first();
-        $agent = AgentProfile::first();
+        $collector = CollectorProfile::first();
 
         LoanAssignment::create([
             'loan_id' => $loan->id,
-            'agent_profile_id' => $agent->id,
-            'role' => 'telemarketer',
+            'collector_profile_id' => $collector->id,
         ]);
     }
 }

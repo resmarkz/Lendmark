@@ -32,9 +32,9 @@ function DashboardLayout({ children, auth }) {
                             href: "/dashboard/admin/manage-users/admins",
                         },
                         {
-                            name: "Agents",
+                            name: "Collectors",
                             icon: "fas fa-user-tie",
-                            href: "/dashboard/admin/manage-users/agents",
+                            href: "/dashboard/admin/manage-users/collectors",
                         },
                         {
                             name: "Clients",

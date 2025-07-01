@@ -2,7 +2,7 @@ import DeleteButton from "../DeleteButton";
 import Table from "./Table";
 import { Link } from "@inertiajs/react";
 
-const AgentTable = ({ agents }) => {
+const CollectorTable = ({ collectors }) => {
     const headers = [
         { label: "Name", className: "w-1/4" },
         { label: "Email", className: "w-1/4" },
@@ -11,13 +11,13 @@ const AgentTable = ({ agents }) => {
         { label: "Actions", className: "w-1/8 text-right" },
     ];
 
-    const renderDesktopRow = (agent) => (
+    const renderDesktopRow = (collector) => (
         <>
             <td className="px-6 py-4 whitespace-nowrap">
                 <div className="flex items-center">
                     <div className="flex-shrink-0 h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center">
                         <span className="text-indigo-600 font-medium">
-                            {agent.name
+                            {collector.name
                                 .split(" ")
                                 .map((n) => n[0])
                                 .join("")
@@ -26,50 +26,47 @@ const AgentTable = ({ agents }) => {
                     </div>
                     <div className="ml-4">
                         <div className="text-sm font-medium text-gray-900">
-                            {agent.name}
+                            {collector.name}
                         </div>
                         <div className="text-sm text-gray-500">
-                            {agent.role}
+                            {collector.role}
                         </div>
                     </div>
                 </div>
             </td>
             <td className="px-6 py-4 whitespace-nowrap">
-                <div className="text-sm text-gray-900">{agent.email}</div>
+                <div className="text-sm text-gray-900">{collector.email}</div>
                 <div className="text-sm text-gray-500">
-                    {agent.email_verified_at ? "Verified" : "Unverified"}
+                    {collector.email_verified_at ? "Verified" : "Unverified"}
                 </div>
             </td>
             <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm text-gray-900">
-                    {agent.agent_profile?.contact_number || "N/A"}
-                </div>
-                <div className="text-sm text-gray-500">
-                    Department: {agent.agent_profile?.department?.name || "N/A"}
+                    {collector.collector_profile?.contact_number || "N/A"}
                 </div>
             </td>
             <td className="px-6 py-4">
                 <div className="text-sm text-gray-900">
                     <span className="font-medium">DOB:</span>{" "}
-                    {agent.agent_profile?.date_of_birth || "N/A"}
+                    {collector.collector_profile?.date_of_birth || "N/A"}
                 </div>
                 <div className="text-sm text-gray-500">
                     <span className="font-medium">Member Since:</span>{" "}
-                    {new Date(agent.created_at).toLocaleDateString()}
+                    {new Date(collector.created_at).toLocaleDateString()}
                 </div>
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                 <div className="flex items-center space-x-2 justify-end">
                     <Link
-                        href={`/dashboard/admin/manage-users/agents/${agent.id}/edit`}
+                        href={`/dashboard/admin/manage-users/collectors/${collector.id}/edit`}
                         className="text-indigo-600 hover:text-indigo-900"
                     >
                         <i className="fas fa-edit"></i>
                     </Link>
                     <DeleteButton
-                        routeName="admin.manage-users.agents.destroy"
-                        itemId={agent.id}
-                        confirmText="Are you sure you want to delete this agent?"
+                        routeName="admin.manage-users.collectors.destroy"
+                        itemId={collector.id}
+                        confirmText="Are you sure you want to delete this collector?"
                     >
                         <i className="fas fa-trash"></i>
                     </DeleteButton>
@@ -78,12 +75,12 @@ const AgentTable = ({ agents }) => {
         </>
     );
 
-    const renderMobileCard = (agent) => (
+    const renderMobileCard = (collector) => (
         <div>
             <div className="flex items-center space-x-3">
                 <div className="flex-shrink-0 h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center">
                     <span className="text-indigo-600 font-medium">
-                        {agent.name
+                        {collector.name
                             .split(" ")
                             .map((n) => n[0])
                             .join("")
@@ -92,11 +89,11 @@ const AgentTable = ({ agents }) => {
                 </div>
                 <div>
                     <h3 className="text-lg font-medium text-gray-900">
-                        {agent.name}
+                        {collector.name}
                     </h3>
-                    <p className="text-sm text-gray-500">{agent.email}</p>
+                    <p className="text-sm text-gray-500">{collector.email}</p>
                     <p className="text-sm text-gray-500">
-                        {agent.email_verified_at ? "Verified" : "Unverified"}
+                        {collector.email_verified_at ? "Verified" : "Unverified"}
                     </p>
                 </div>
             </div>
@@ -107,16 +104,7 @@ const AgentTable = ({ agents }) => {
                         Contact:
                     </span>
                     <p className="text-sm">
-                        {agent.agent_profile?.contact_number || "N/A"}
-                    </p>
-                </div>
-
-                <div>
-                    <span className="text-sm font-medium text-gray-500">
-                        Department:
-                    </span>
-                    <p className="text-sm">
-                        {agent.agent_profile?.department?.name || "N/A"}
+                        {collector.collector_profile?.contact_number || "N/A"}
                     </p>
                 </div>
 
@@ -126,7 +114,7 @@ const AgentTable = ({ agents }) => {
                             DOB:
                         </span>
                         <p className="text-sm">
-                            {agent.agent_profile?.date_of_birth || "N/A"}
+                            {collector.collector_profile?.date_of_birth || "N/A"}
                         </p>
                     </div>
                     <div>
@@ -134,7 +122,7 @@ const AgentTable = ({ agents }) => {
                             Member Since:
                         </span>
                         <p className="text-sm">
-                            {new Date(agent.created_at).toLocaleDateString()}
+                            {new Date(collector.created_at).toLocaleDateString()}
                         </p>
                     </div>
                 </div>
@@ -142,15 +130,15 @@ const AgentTable = ({ agents }) => {
                 <div className="flex items-center justify-between pt-2">
                     <div className="flex space-x-3">
                         <Link
-                            href={`/dashboard/admin/manage-users/agents/${agent.id}/edit`}
+                            href={`/dashboard/admin/manage-users/collectors/${collector.id}/edit`}
                             className="text-indigo-600 hover:text-indigo-900"
                         >
                             <i className="fas fa-edit"></i> Edit
                         </Link>
                         <DeleteButton
-                            routeName="admin.manage-users.agents.destroy"
-                            itemId={agent.id}
-                            confirmText="Are you sure you want to delete this agent?"
+                            routeName="admin.manage-users.collectors.destroy"
+                            itemId={collector.id}
+                            confirmText="Are you sure you want to delete this collector?"
                         >
                             <i className="fas fa-trash"></i>
                         </DeleteButton>
@@ -163,8 +151,8 @@ const AgentTable = ({ agents }) => {
     return (
         <Table
             headers={headers}
-            data={agents.data}
-            emptyMessage="No agents found"
+            data={collectors.data}
+            emptyMessage="No collectors found"
             renderDesktopRow={renderDesktopRow}
             renderMobileCard={renderMobileCard}
             className="shadow overflow-hidden sm:rounded-lg"
@@ -172,4 +160,4 @@ const AgentTable = ({ agents }) => {
     );
 };
 
-export default AgentTable;
+export default CollectorTable;

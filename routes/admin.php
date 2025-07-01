@@ -37,13 +37,13 @@ Route::middleware(['auth', 'verified'])
             Route::delete('/{client}', [UserManagementController::class, 'destroyClient'])->name('destroy');
         });
 
-        // Agents route
-        Route::prefix('agents')->name('agents.')->group(function () {
-            Route::get('/', [UserManagementController::class, 'viewAgents'])->name('index');
-            Route::get('/create', [UserManagementController::class, 'viewCreateAgent'])->name('create');
-            Route::post('/', [UserManagementController::class, 'storeAgent'])->name('store');
-            Route::get('/{agent}/edit', [UserManagementController::class, 'viewEditAgent'])->name('edit');
-            Route::put('/{agent}', [UserManagementController::class, 'updateAgent'])->name('update');
-            Route::delete('/{agent}', [UserManagementController::class, 'destroyAgent'])->name('destroy');
+        // Collectors route
+        Route::prefix('collectors')->name('collectors.')->group(function () {
+            Route::get('/', [UserManagementController::class, 'viewCollectors'])->name('index');
+            Route::get('/create', [UserManagementController::class, 'viewCreateCollector'])->name('create');
+            Route::post('/', [UserManagementController::class, 'storeCollector'])->name('store');
+            Route::get('/{collector}/edit', [UserManagementController::class, 'viewEditCollector'])->name('edit');
+            Route::put('/{collector}', [UserManagementController::class, 'updateCollector'])->name('update');
+            Route::delete('/{collector}', [UserManagementController::class, 'destroyCollector'])->name('destroy');
         });
     });
