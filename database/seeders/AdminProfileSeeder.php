@@ -18,7 +18,7 @@ class AdminProfileSeeder extends Seeder
 
         AdminProfile::create([
             'user_id' => $admin->id,
-            'position' => 'Super Admin',
+            
         ]);
     }
 }
