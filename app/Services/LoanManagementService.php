@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Loan;
+use App\Models\User;
 
 class LoanManagementService
 {
@@ -32,4 +33,20 @@ class LoanManagementService
 
         return $loans;
     }
+
+    public function getClientList()
+    {
+        $clients = User::where('role', 'client')
+            ->get();
+        return $clients;
+    }
+
+    public function getCollectorList()
+    {
+        $collectors = User::where('role', 'collector')
+            ->get();
+        return $collectors;
+    }
+
+    public function storeLoan(array $data) {}
 }

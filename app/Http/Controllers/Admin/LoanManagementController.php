@@ -23,4 +23,16 @@ class LoanManagementController extends Controller
             'loans' => $this->loanService->getLoans(),
         ]);
     }
+
+    public function viewCreateLoan()
+    {
+        $clientList = $this->loanService->getClientList();
+        $collectorList = $this->loanService->getCollectorList();
+        return inertia('Dashboard/admin/loans/create', [
+            'clients' => $clientList,
+            'collectors' => $collectorList,
+        ]);
+    }
+
+    public function addLoan() {}
 }

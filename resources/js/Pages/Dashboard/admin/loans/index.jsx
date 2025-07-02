@@ -4,6 +4,7 @@ import Pagination from "@/Components/Pagination/Pagination";
 import LoanTable from "@/Components/Tables/LoanTable";
 
 function AdminLoanSubpage({ loans }) {
+    console.log(loans);
     return (
         <div className="space-y-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -12,7 +13,7 @@ function AdminLoanSubpage({ loans }) {
                 </h2>
                 <div className="flex gap-3">
                     <Link
-                        href="/dashboard/admin/loans/create"
+                        href={route("admin.loans.create")}
                         className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
                         <i className="fas fa-plus mr-2"></i> Create Loan

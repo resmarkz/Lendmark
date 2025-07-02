@@ -10,7 +10,14 @@ Route::get('/overview', function () {
     return Inertia::render('Dashboard/admin/overview/index');
 })->middleware(['auth', 'verified'])->name('dashboard.admin.overview');
 
-Route::get('/loans', [LoanManagementController::class, 'viewLoans'])->middleware(['auth', 'verified'])->name('dashboard.admin.loans');
+// Route: admin.loans.
+Route::middleware(['auth', 'verified'])
+    ->prefix('loans')
+    ->name('admin.loans.')
+    ->group(function () {
+        Route::get('/', [LoanManagementController::class, 'viewLoans'])->name('index');
+        Route::get('/create', [LoanManagementController::class, 'viewCreateLoan'])->name('create');
+    });
 
 Route::middleware(['auth', 'verified'])
     ->prefix('manage-users')

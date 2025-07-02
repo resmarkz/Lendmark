@@ -153,8 +153,6 @@ const AdminManageAdminCreate = ({ auth }) => {
                                 minLength="8"
                             />
                         </div>
-
-                        
                     </div>
 
                     {/* Form Actions */}
