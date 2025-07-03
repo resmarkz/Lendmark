@@ -34,12 +34,22 @@ class LoanManagementService
 
     public function getClientList()
     {
-        return ClientProfile::with('user')->get()->map(function ($profile) {
-            return [
-                'id' => $profile->id,
-                'name' => $profile->user->name,
-            ];
-        });
+        return ClientProfile::with(['user', 'loans'])
+            ->get()
+            ->filter(function ($client) {
+                if ($client->loans->isEmpty()) {
+                    return true; // Client has no loans
+                }
+
+                $latestLoan = $client->loans->sortByDesc('created_at')->first();
+                return $latestLoan && $latestLoan->status === 'settled';
+            })
+            ->map(function ($client) {
+                return [
+                    'id' => $client->id,
+                    'name' => $client->user->name,
+                ];
+            })->values();
     }
 
     public function getCollectorList()

@@ -27,4 +27,9 @@ class ClientProfile extends Model
     {
         return $this->hasMany(ContactReference::class);
     }
+
+    public function loans()
+    {
+        return $this->hasMany(Loan::class, 'client_profile_id');
+    }
 }
