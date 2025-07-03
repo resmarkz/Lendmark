@@ -5,10 +5,14 @@ import Table from "./Table";
 const LoanTable = ({ loans }) => {
     const getStatusBadge = (status) => {
         const statusClasses = {
-            active: "bg-green-100 text-green-800",
+            active: "bg-blue-100 text-blue-800",
+            ongoing: "bg-blue-100 text-blue-800",
             pending: "bg-yellow-100 text-yellow-800",
-            completed: "bg-blue-100 text-blue-800",
+            approved: "bg-green-100 text-green-800",
+            rejected: "bg-red-100 text-red-800",
+            paid: "bg-purple-100 text-purple-800",
             overdue: "bg-red-100 text-red-800",
+            settled: "bg-emerald-100 text-emerald-800",
             default: "bg-gray-100 text-gray-800",
         };
         return statusClasses[status] || statusClasses.default;
@@ -17,6 +21,7 @@ const LoanTable = ({ loans }) => {
     const headers = [
         { label: "Loan ID", className: "w-1/8" },
         { label: "Client", className: "w-1/6" },
+        { label: "Collector", className: "w-1/6" },
         { label: "Amount", className: "w-1/8" },
         { label: "Interest", className: "w-1/8" },
         { label: "Term", className: "w-1/8" },
@@ -36,7 +41,10 @@ const LoanTable = ({ loans }) => {
                 </Link>
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {loan.client?.name || "N/A"}
+                {loan.client_name || "N/A"}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                {loan.collector_name || "N/A"}
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                 ₱{parseInt(loan.amount).toLocaleString()}
@@ -84,17 +92,20 @@ const LoanTable = ({ loans }) => {
     );
 
     const renderMobileCard = (loan) => (
-        <div>
+        <div className="p-4 bg-white border-b border-gray-200">
             <div className="flex justify-between items-start">
                 <div>
                     <Link
                         href={`/dashboard/admin/loans/${loan.id}`}
-                        className="text-indigo-600 font-medium hover:underline"
+                        className="text-indigo-600 font-medium hover:underline text-sm"
                     >
                         {loan.marketing_id}
                     </Link>
-                    <p className="text-sm text-gray-500 mt-1">
-                        {loan.client?.name || "N/A"}
+                    <p className="text-xs text-gray-500 mt-1">
+                        Client: {loan.client_name || "N/A"}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                        Collector: {loan.collector_name || "N/A"}
                     </p>
                 </div>
                 <span
@@ -106,41 +117,41 @@ const LoanTable = ({ loans }) => {
                 </span>
             </div>
 
-            <div className="mt-3 grid grid-cols-2 gap-2 text-sm">
-                <div>
-                    <p className="text-gray-500">Amount</p>
-                    <p>₱{parseInt(loan.amount).toLocaleString()}</p>
+            <div className="mt-3 grid grid-cols-2 gap-y-2 gap-x-4 text-xs">
+                <div className="flex flex-col">
+                    <span className="text-gray-500 font-medium">Amount</span>
+                    <span>₱{parseInt(loan.amount).toLocaleString()}</span>
                 </div>
-                <div>
-                    <p className="text-gray-500">Interest</p>
-                    <p>{loan.interest_rate}%</p>
+                <div className="flex flex-col">
+                    <span className="text-gray-500 font-medium">Interest</span>
+                    <span>{loan.interest_rate}%</span>
                 </div>
-                <div>
-                    <p className="text-gray-500">Term</p>
-                    <p>{loan.term}</p>
+                <div className="flex flex-col">
+                    <span className="text-gray-500 font-medium">Term</span>
+                    <span>{loan.term}</span>
                 </div>
-                <div>
-                    <p className="text-gray-500">Due Date</p>
-                    <p>
+                <div className="flex flex-col">
+                    <span className="text-gray-500 font-medium">Due Date</span>
+                    <span>
                         {new Date(loan.due_date).toLocaleDateString("en-US", {
                             month: "short",
                             day: "numeric",
                             year: "numeric",
                         })}
-                    </p>
+                    </span>
                 </div>
             </div>
 
-            <div className="mt-3 flex justify-end space-x-2">
+            <div className="mt-3 flex justify-end space-x-3">
                 <Link
                     href={`/dashboard/admin/loans/${loan.id}/edit`}
-                    className="text-indigo-600 hover:text-indigo-900 p-2"
+                    className="text-indigo-600 hover:text-indigo-900"
                     title="Edit"
                 >
                     <i className="fas fa-edit"></i>
                 </Link>
                 <button
-                    className="text-red-600 hover:text-red-900 p-2"
+                    className="text-red-600 hover:text-red-900"
                     title="Delete"
                 >
                     <i className="fas fa-trash"></i>

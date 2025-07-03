@@ -21,9 +21,4 @@ class CollectorProfile extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-    public function loanAssignments()
-    {
-        return $this->hasMany(LoanAssignment::class);
-    }
 }

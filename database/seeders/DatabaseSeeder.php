@@ -28,7 +28,6 @@ class DatabaseSeeder extends Seeder
             ContactReferenceSeeder::class,
             LoanSeeder::class,
             PaymentSeeder::class,
-            LoanAssignmentSeeder::class,
         ]);
     }
 }

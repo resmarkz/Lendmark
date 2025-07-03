@@ -17,6 +17,8 @@ Route::middleware(['auth', 'verified'])
     ->group(function () {
         Route::get('/', [LoanManagementController::class, 'viewLoans'])->name('index');
         Route::get('/create', [LoanManagementController::class, 'viewCreateLoan'])->name('create');
+        Route::post('/', [LoanManagementController::class, 'addLoan'])->name('store');
+        Route::put('/{loan}', [LoanManagementController::class, 'updateLoan'])->name('update');
     });
 
 Route::middleware(['auth', 'verified'])

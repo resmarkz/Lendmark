@@ -4,7 +4,7 @@ import Pagination from "@/Components/Pagination/Pagination";
 import LoanTable from "@/Components/Tables/LoanTable";
 
 function AdminLoanSubpage({ loans }) {
-    console.log(loans);
+    console.log(JSON.stringify(loans.data));
     return (
         <div className="space-y-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">

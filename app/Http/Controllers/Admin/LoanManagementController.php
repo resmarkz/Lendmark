@@ -34,5 +34,17 @@ class LoanManagementController extends Controller
         ]);
     }
 
-    public function addLoan() {}
+    public function addLoan(Request $request)
+    {
+        $data = $request->validate([
+            'amount' => 'required|numeric',
+            'term' => 'required|integer',
+            'interest_rate' => 'required|numeric',
+            'client_profile_id' => 'required|integer',
+            'collector_profile_id' => 'required|integer',
+        ]);
+
+        $this->loanService->storeLoan($data);
+        return redirect()->route('admin.loans.index')->with('success', 'Loan added successfully.');
+    }
 }

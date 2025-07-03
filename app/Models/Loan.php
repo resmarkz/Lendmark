@@ -10,10 +10,16 @@ class Loan extends Model
     use HasFactory;
 
     protected $fillable = [
-        'client_profile_id',
         'amount',
+        'term',
         'interest_rate',
         'status',
+        'client_profile_id',
+        'collector_profile_id',
+    ];
+
+    protected $casts = [
+        'term' => 'integer',
     ];
 
     protected static function boot()
@@ -25,15 +31,8 @@ class Loan extends Model
             $loan->marketing_id = $prefix . str_pad($loan->id, 6, '0', STR_PAD_LEFT);
             // Auto compute the due date based on the term and current date
             $loan->due_date = now()->addMonths($loan->term);
-            // Set the status to 'pending' by default
-            $loan->status = 'pending';
             $loan->save();
         });
-    }
-
-    public function clientProfile()
-    {
-        return $this->belongsTo(ClientProfile::class);
     }
 
     public function payments()
@@ -41,8 +40,13 @@ class Loan extends Model
         return $this->hasMany(Payment::class);
     }
 
-    public function loanAssignments()
+    public function clientProfile()
     {
-        return $this->hasMany(LoanAssignment::class);
+        return $this->belongsTo(ClientProfile::class);
+    }
+
+    public function collectorProfile()
+    {
+        return $this->belongsTo(CollectorProfile::class);
     }
 }
