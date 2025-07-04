@@ -94,7 +94,7 @@ function DashboardLayout({ children, auth }) {
             <div
                 className={`fixed inset-y-0 left-0 z-40 w-64 bg-white shadow-md transform transition-transform duration-200 ease-in-out ${
                     sidebarOpen ? "translate-x-0" : "-translate-x-full"
-                } lg:translate-x-0 lg:static lg:inset-0`}
+                } lg:translate-x-0`}
             >
                 <div className="h-16 px-4 flex items-center justify-between border-b border-gray-200">
                     <span className="text-indigo-600 font-bold text-xl">
@@ -108,7 +108,7 @@ function DashboardLayout({ children, auth }) {
                     </button>
                 </div>
 
-                <div className="h-full overflow-y-auto py-4">
+                <div className="h-[calc(100%-4rem)] overflow-y-auto py-4">
                     <nav className="space-y-6">
                         {sidebarLinks.map((group) => (
                             <div key={group.group} className="space-y-1">
@@ -226,8 +226,8 @@ function DashboardLayout({ children, auth }) {
                 </div>
             </div>
 
-            <div className="flex-1 flex flex-col">
-                <header className="h-16 bg-white shadow-sm flex items-center justify-between px-4 sm:px-6 lg:px-8">
+            <div className="flex-1 flex flex-col ml-0 lg:ml-64">
+                <header className="fixed top-0 right-0 left-0 lg:left-64 h-16 bg-white shadow-sm flex items-center justify-between px-4 sm:px-6 lg:px-8 z-20">
                     <button
                         type="button"
                         className="text-gray-400 lg:hidden"
@@ -259,12 +259,8 @@ function DashboardLayout({ children, auth }) {
                     </div>
                 </header>
 
-                <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50">
-                    <div className="container max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        <div className="bg-white p-6 rounded-lg shadow">
-                            {children}
-                        </div>
-                    </div>
+                <main className="flex-1 overflow-x-hidden overflow-y-auto bg-white mt-16">
+                    <div className="py-6 px-4 sm:px-6 lg:px-8">{children}</div>
                 </main>
             </div>
         </div>

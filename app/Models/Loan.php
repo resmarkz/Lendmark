@@ -27,9 +27,8 @@ class Loan extends Model
         parent::boot();
 
         static::created(function ($loan) {
-            $prefix = 'LM-';
+            $prefix = 'LM';
             $loan->marketing_id = $prefix . str_pad($loan->id, 6, '0', STR_PAD_LEFT);
-            // Auto compute the due date based on the term and current date
             $loan->due_date = now()->addMonths($loan->term);
             $loan->save();
         });

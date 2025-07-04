@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { Link } from "@inertiajs/react";
 import Table from "./Table";
+import DeleteButton from "../DeleteButton";
 
 const LoanTable = ({ loans }) => {
     const getStatusBadge = (status) => {
@@ -13,6 +14,7 @@ const LoanTable = ({ loans }) => {
             paid: "bg-purple-100 text-purple-800",
             overdue: "bg-red-100 text-red-800",
             settled: "bg-emerald-100 text-emerald-800",
+            cancelled: "bg-gray-100 text-gray-800",
             default: "bg-gray-100 text-gray-800",
         };
         return statusClasses[status] || statusClasses.default;
@@ -34,7 +36,7 @@ const LoanTable = ({ loans }) => {
         <>
             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-indigo-600">
                 <Link
-                    href={`/dashboard/admin/loans/${loan.marketing_id}`}
+                    href={route("admin.loans.show", loan.id)}
                     className="hover:underline"
                 >
                     {loan.marketing_id}
@@ -74,18 +76,19 @@ const LoanTable = ({ loans }) => {
             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                 <div className="flex justify-end space-x-2">
                     <Link
-                        href={`/dashboard/admin/loans/${loan.id}/edit`}
+                        href={route("admin.loans.edit", loan.id)}
                         className="text-indigo-600 hover:text-indigo-900"
                         title="Edit"
                     >
                         <i className="fas fa-edit"></i>
                     </Link>
-                    <button
-                        className="text-red-600 hover:text-red-900"
-                        title="Delete"
+                    <DeleteButton
+                        routeName="admin.loans.destroy"
+                        itemId={loan.id}
+                        confirmText="Are you sure you want to delete this loan?"
                     >
                         <i className="fas fa-trash"></i>
-                    </button>
+                    </DeleteButton>
                 </div>
             </td>
         </>
@@ -96,7 +99,7 @@ const LoanTable = ({ loans }) => {
             <div className="flex justify-between items-start">
                 <div>
                     <Link
-                        href={`/dashboard/admin/loans/${loan.id}`}
+                        href={route("admin.loans.show", loan.id)}
                         className="text-indigo-600 font-medium hover:underline text-sm"
                     >
                         {loan.marketing_id}
@@ -144,18 +147,19 @@ const LoanTable = ({ loans }) => {
 
             <div className="mt-3 flex justify-end space-x-3">
                 <Link
-                    href={`/dashboard/admin/loans/${loan.id}/edit`}
+                    href={route("admin.loans.edit", loan.id)}
                     className="text-indigo-600 hover:text-indigo-900"
                     title="Edit"
                 >
                     <i className="fas fa-edit"></i>
                 </Link>
-                <button
-                    className="text-red-600 hover:text-red-900"
-                    title="Delete"
+                <DeleteButton
+                    routeName="admin.loans.destroy"
+                    itemId={loan.id}
+                    confirmText="Are you sure you want to delete this loan?"
                 >
                     <i className="fas fa-trash"></i>
-                </button>
+                </DeleteButton>
             </div>
         </div>
     );

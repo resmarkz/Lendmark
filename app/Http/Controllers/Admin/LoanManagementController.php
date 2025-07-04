@@ -47,4 +47,42 @@ class LoanManagementController extends Controller
         $this->loanService->storeLoan($data);
         return redirect()->route('admin.loans.index')->with('success', 'Loan added successfully.');
     }
+
+    public function viewLoan(Loan $loan)
+    {
+        return inertia('Dashboard/admin/loans/show', [
+            'loan' => $loan,
+        ]);
+    }
+
+    public function viewEditLoan(Loan $loan)
+    {
+        $clientList = $this->loanService->getClientList($loan->client_profile_id);
+        $collectorList = $this->loanService->getCollectorList();
+        return inertia('Dashboard/admin/loans/edit', [
+            'loan' => $loan,
+            'clients' => $clientList,
+            'collectors' => $collectorList,
+        ]);
+    }
+
+    public function updateLoan(Request $request, Loan $loan)
+    {
+        $data = $request->validate([
+            'amount' => 'required|numeric',
+            'term' => 'required|integer',
+            'interest_rate' => 'required|numeric',
+            'client_profile_id' => 'required|integer',
+            'collector_profile_id' => 'required|integer',
+            'status' => 'required|in:ongoing,pending,approved,rejected,paid,overdue,settled,cancelled,default',
+        ]);
+        $this->loanService->updateLoan($loan, $data);
+        return redirect()->route('admin.loans.index')->with('success', 'Loan updated successfully.');
+    }
+
+    public function destroyLoan(Loan $loan)
+    {
+        $this->loanService->deleteLoan($loan);
+        return redirect()->route('admin.loans.index')->with('success', 'Loan deleted successfully.');
+    }
 }

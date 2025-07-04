@@ -32,13 +32,19 @@ class LoanManagementService
         return $loans;
     }
 
-    public function getClientList()
+    public function getClientList($currentClientId = null)
     {
         return ClientProfile::with(['user', 'loans'])
             ->get()
-            ->filter(function ($client) {
+            ->filter(function ($client) use ($currentClientId) {
+                // For edit purposes
+                if ($currentClientId && $client->id == $currentClientId) {
+                    return true;
+                }
+
+                // For client without loans
                 if ($client->loans->isEmpty()) {
-                    return true; // Client has no loans
+                    return true;
                 }
 
                 $latestLoan = $client->loans->sortByDesc('created_at')->first();
@@ -62,10 +68,19 @@ class LoanManagementService
         });
     }
 
+    public function updateLoan(Loan $loan, array $data)
+    {
+        $loan->update($data);
+        return $loan;
+    }
+
     public function storeLoan(array $data)
     {
-        // The 'client_profile_id' and 'collector_profile_id' are already in $data
-        // and are marked as fillable in the Loan model, so we can pass it all directly.
         return Loan::create($data);
+    }
+
+    public function deleteLoan(Loan $loan)
+    {
+        $loan->delete();
     }
 }

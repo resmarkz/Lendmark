@@ -17,8 +17,11 @@ Route::middleware(['auth', 'verified'])
     ->group(function () {
         Route::get('/', [LoanManagementController::class, 'viewLoans'])->name('index');
         Route::get('/create', [LoanManagementController::class, 'viewCreateLoan'])->name('create');
+        Route::get('/{loan}', [LoanManagementController::class, 'viewLoan'])->name('show');
+        Route::get('/{loan}/edit', [LoanManagementController::class, 'viewEditLoan'])->name('edit');
         Route::post('/', [LoanManagementController::class, 'addLoan'])->name('store');
         Route::put('/{loan}', [LoanManagementController::class, 'updateLoan'])->name('update');
+        Route::delete('/{loan}', [LoanManagementController::class, 'destroyLoan'])->name('destroy');
     });
 
 Route::middleware(['auth', 'verified'])

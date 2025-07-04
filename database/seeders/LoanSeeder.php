@@ -27,8 +27,8 @@ class LoanSeeder extends Seeder
             'collector_profile_id' => $collectorProfile->id,
             'amount' => 10000.00,
             'term' => 6,
-            'interest_rate' => 5.5,
-            'status' => 'settled',
+            'interest_rate' => 10,
+            'status' => 'ongoing',
         ]);
     }
 }
