@@ -16,7 +16,7 @@ class CollectorProfile extends Model
         'source_of_income',
     ];
 
-    // Relationships
+    
     public function user()
     {
         return $this->belongsTo(User::class);

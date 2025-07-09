@@ -22,7 +22,6 @@ const AdminManageClientsEdit = ({ client, auth }) => {
             <div className="bg-white shadow overflow-hidden sm:rounded-lg">
                 <div className="px-6 py-5">
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                        {/* Basic Info Section */}
                         <div className="space-y-4">
                             <h3 className="text-lg font-medium text-gray-900 border-b pb-2">
                                 Basic Information
@@ -50,7 +49,6 @@ const AdminManageClientsEdit = ({ client, auth }) => {
                             </div>
                         </div>
 
-                        {/* Profile Section */}
                         <div className="space-y-4">
                             <h3 className="text-lg font-medium text-gray-900 border-b pb-2">
                                 Profile Information
@@ -75,7 +73,6 @@ const AdminManageClientsEdit = ({ client, auth }) => {
                             </div>
                         </div>
 
-                        {/* Address Section */}
                         <div className="space-y-4 sm:col-span-2">
                             <h3 className="text-lg font-medium text-gray-900 border-b pb-2">
                                 Address Information
@@ -91,7 +88,6 @@ const AdminManageClientsEdit = ({ client, auth }) => {
                             </div>
                         </div>
 
-                        {/* Financial Info Section */}
                         <div className="space-y-4 sm:col-span-2">
                             <h3 className="text-lg font-medium text-gray-900 border-b pb-2">
                                 Financial Information

@@ -23,7 +23,6 @@ export default function Register() {
             <Head title="Register" />
 
             <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8">
-                {/* Logo Header */}
                 <div className="text-center mb-8">
                     <div className="mx-auto bg-indigo-600 p-3 rounded-full w-16 h-16 flex items-center justify-center mb-4">
                         <i className="fas fa-hand-holding-usd text-white text-2xl"></i>
@@ -35,7 +34,6 @@ export default function Register() {
                 </div>
 
                 <form onSubmit={handleSubmit}>
-                    {/* Name Field */}
                     <div className="mb-4">
                         <InputLabel value="Full Name" />
                         <TextInput
@@ -48,7 +46,6 @@ export default function Register() {
                         <InputError message={errors.name} className="mt-1" />
                     </div>
 
-                    {/* Email Field */}
                     <div className="mb-4">
                         <InputLabel value="Email Address" />
                         <TextInput
@@ -62,7 +59,6 @@ export default function Register() {
                         <InputError message={errors.email} className="mt-1" />
                     </div>
 
-                    {/* Password Field */}
                     <div className="mb-4">
                         <InputLabel value="Password" />
                         <TextInput
@@ -81,7 +77,6 @@ export default function Register() {
                         />
                     </div>
 
-                    {/* Confirm Password Field */}
                     <div className="mb-6">
                         <InputLabel value="Confirm Password" />
                         <TextInput

@@ -106,7 +106,6 @@ class UserManagementService
             "name" => $data["name"],
             "email" => $data["email"],
 
-            // Only update password if it was provided
             'password' => $data['password'] ? bcrypt($data['password']) : $client->password
         ]);
 

@@ -8,13 +8,11 @@ export default function Pagination({ links, meta, only = [] }) {
 
     return (
         <div className="flex items-center justify-between mt-6">
-            {/* Mobile pagination */}
             <div className="flex-1 flex justify-between sm:hidden">
                 <PreviousButton links={links} />
                 <NextButton links={links} />
             </div>
 
-            {/* Desktop pagination */}
             <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
                 <div>
                     <p className="text-sm text-gray-700">

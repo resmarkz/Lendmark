@@ -7,7 +7,6 @@ function AdminOverviewSubPage() {
                 Dashboard Overview
             </h1>
 
-            {/* Sample Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                 <div className="bg-indigo-50 p-4 rounded-lg">
                     <div className="flex items-center">

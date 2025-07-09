@@ -22,7 +22,7 @@ class UserManagementController extends Controller
         $this->userService = $userManagementService;
     }
 
-    // Admin Methods
+    
     public function viewAdmins()
     {
         return inertia('Dashboard/admin/manage-users/admins/index', [
@@ -72,7 +72,7 @@ class UserManagementController extends Controller
             ->with('success', 'Admin deleted successfully');
     }
 
-    // Collector Methods
+    
     public function viewCollectors()
     {
         return inertia('Dashboard/admin/manage-users/collectors/index', [
@@ -116,7 +116,7 @@ class UserManagementController extends Controller
             ->with('success', 'Collector deleted successfully');
     }
 
-    // Client Methods
+    
     public function viewClients()
     {
         return inertia('Dashboard/admin/manage-users/clients/index', [

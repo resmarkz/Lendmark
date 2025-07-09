@@ -10,7 +10,7 @@ export default function Navbar() {
         <nav className="bg-white shadow-sm">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between h-16">
-                    {/* Logo */}
+                    
                     <div className="flex items-center">
                         <Link
                             href="/"
@@ -21,7 +21,7 @@ export default function Navbar() {
                         </Link>
                     </div>
 
-                    {/* Desktop Navigation */}
+                    
                     <div className="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
                         {auth.user ? (
                             <>
@@ -64,7 +64,7 @@ export default function Navbar() {
                         )}
                     </div>
 
-                    {/* Mobile menu button */}
+                    
                     <div className="-mr-2 flex items-center sm:hidden">
                         <button
                             type="button"
@@ -82,7 +82,7 @@ export default function Navbar() {
                 </div>
             </div>
 
-            {/* Mobile menu */}
+            
             <div className={`sm:hidden ${mobileMenuOpen ? "block" : "hidden"}`}>
                 <div className="pt-2 pb-3 space-y-1">
                     {auth.user ? (

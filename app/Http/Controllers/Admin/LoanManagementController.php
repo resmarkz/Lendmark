@@ -17,10 +17,15 @@ class LoanManagementController extends Controller
         $this->loanService = $loanService;
     }
 
-    public function viewLoans()
+    public function viewLoans(Request $request)
     {
+        $loans = $this->loanService->getLoans($request);
+        $collectors = $this->loanService->getCollectorList();
+
         return Inertia::render('Dashboard/admin/loans/index', [
-            'loans' => $this->loanService->getLoans(),
+            'loans' => $loans,
+            'collectors' => $collectors,
+            'filters' => $request->all(),
         ]);
     }
 
@@ -50,6 +55,10 @@ class LoanManagementController extends Controller
 
     public function viewLoan(Loan $loan)
     {
+        $loan->load([
+            'clientProfile.user',
+            'collectorProfile.user:id,name'
+        ]);
         return inertia('Dashboard/admin/loans/show', [
             'loan' => $loan,
         ]);

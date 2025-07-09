@@ -42,7 +42,6 @@ const AdminManageClientsCreate = ({ auth }) => {
             <div className="bg-white shadow overflow-hidden sm:rounded-lg">
                 <form onSubmit={handleSubmit} className="px-6 py-5 space-y-6">
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                        {/* Name Field */}
                         <div>
                             <label
                                 htmlFor="name"
@@ -72,7 +71,6 @@ const AdminManageClientsCreate = ({ auth }) => {
                             )}
                         </div>
 
-                        {/* Email Field */}
                         <div>
                             <label
                                 htmlFor="email"
@@ -102,7 +100,6 @@ const AdminManageClientsCreate = ({ auth }) => {
                             )}
                         </div>
 
-                        {/* Password Field */}
                         <div>
                             <label
                                 htmlFor="password"
@@ -132,7 +129,6 @@ const AdminManageClientsCreate = ({ auth }) => {
                             )}
                         </div>
 
-                        {/* Password Confirmation */}
                         <div>
                             <label
                                 htmlFor="password_confirmation"
@@ -157,7 +153,6 @@ const AdminManageClientsCreate = ({ auth }) => {
                             />
                         </div>
 
-                        {/* Address Field */}
                         <div>
                             <label
                                 htmlFor="address"
@@ -186,7 +181,6 @@ const AdminManageClientsCreate = ({ auth }) => {
                             )}
                         </div>
 
-                        {/* Contact Number Field */}
                         <div>
                             <label
                                 htmlFor="contact_number"
@@ -216,7 +210,6 @@ const AdminManageClientsCreate = ({ auth }) => {
                             )}
                         </div>
 
-                        {/* Date of Birth Field */}
                         <div>
                             <label
                                 htmlFor="date_of_birth"
@@ -246,7 +239,6 @@ const AdminManageClientsCreate = ({ auth }) => {
                             )}
                         </div>
 
-                        {/* Source of Income Field */}
                         <div>
                             <label
                                 htmlFor="source_of_income"
@@ -283,7 +275,6 @@ const AdminManageClientsCreate = ({ auth }) => {
                         </div>
                     </div>
 
-                    {/* Form Actions */}
                     <div className="flex justify-end pt-4 border-t border-gray-200">
                         <button
                             type="submit"

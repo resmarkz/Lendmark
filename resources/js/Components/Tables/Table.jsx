@@ -13,7 +13,6 @@ const Table = ({
 }) => {
     return (
         <div className={className}>
-            {/* Desktop Table (hidden on mobile) */}
             <div className="hidden md:block overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200">
                     <thead className={`bg-gray-50 ${headerClassName}`}>
@@ -55,7 +54,6 @@ const Table = ({
                 </table>
             </div>
 
-            {/* Mobile Cards (hidden on desktop) */}
             <div className="md:hidden space-y-3">
                 {data.length > 0 ? (
                     data.map((item, index) => (

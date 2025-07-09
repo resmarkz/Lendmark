@@ -6,7 +6,6 @@ const AdminTable = ({ admins, currentAdminId }) => {
     const headers = [
         { label: "Name", className: "w-1/6" },
         { label: "Email", className: "w-1/6" },
-        
         { label: "Status", className: "w-1/12" },
         { label: "Actions", className: "w-1/12 text-right" },
     ];
@@ -86,8 +85,6 @@ const AdminTable = ({ admins, currentAdminId }) => {
             </div>
 
             <div className="mt-3 space-y-2">
-                
-
                 <div className="flex items-center justify-between pt-2">
                     <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                         Active

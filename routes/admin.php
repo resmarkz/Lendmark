@@ -10,7 +10,7 @@ Route::get('/overview', function () {
     return Inertia::render('Dashboard/admin/overview/index');
 })->middleware(['auth', 'verified'])->name('dashboard.admin.overview');
 
-// Route: admin.loans.
+
 Route::middleware(['auth', 'verified'])
     ->prefix('loans')
     ->name('admin.loans.')
@@ -28,7 +28,6 @@ Route::middleware(['auth', 'verified'])
     ->prefix('manage-users')
     ->name('admin.manage-users.')
     ->group(function () {
-        // Admins routes
         Route::prefix('admins')->name('admins.')->group(function () {
             Route::get('/', [UserManagementController::class, 'viewAdmins'])->name('index');
             Route::get('/create', [UserManagementController::class, 'viewCreateAdmin'])->name('create');
@@ -38,7 +37,6 @@ Route::middleware(['auth', 'verified'])
             Route::delete('/{admin}', [UserManagementController::class, 'destroyAdmin'])->name('destroy');
         });
 
-        // Clients route
         Route::prefix('clients')->name('clients.')->group(function () {
             Route::get('/', [UserManagementController::class, 'viewClients'])->name('index');
             Route::get('/create', [UserManagementController::class, 'viewCreateClient'])->name('create');
@@ -49,7 +47,6 @@ Route::middleware(['auth', 'verified'])
             Route::delete('/{client}', [UserManagementController::class, 'destroyClient'])->name('destroy');
         });
 
-        // Collectors route
         Route::prefix('collectors')->name('collectors.')->group(function () {
             Route::get('/', [UserManagementController::class, 'viewCollectors'])->name('index');
             Route::get('/create', [UserManagementController::class, 'viewCreateCollector'])->name('create');

@@ -25,7 +25,6 @@ export default function Login({ status, canResetPassword }) {
             <Head title="Sign In to Lendmark" />
 
             <div className="max-w-md w-full bg-white rounded-xl shadow-lg overflow-hidden p-8">
-                {/* Logo Header */}
                 <div className="text-center mb-8">
                     <div className="mx-auto bg-indigo-600 p-3 rounded-full w-16 h-16 flex items-center justify-center mb-4">
                         <i className="fas fa-hand-holding-usd text-white text-2xl"></i>

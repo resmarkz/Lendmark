@@ -37,7 +37,6 @@ const AdminManageCollectorsEdit = ({ collector, auth }) => {
             <div className="bg-white shadow overflow-hidden sm:rounded-lg">
                 <form onSubmit={handleSubmit} className="px-6 py-5 space-y-6">
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                        {/* Name Field */}
                         <div>
                             <label
                                 htmlFor="name"
@@ -67,7 +66,6 @@ const AdminManageCollectorsEdit = ({ collector, auth }) => {
                             )}
                         </div>
 
-                        {/* Email Field */}
                         <div>
                             <label
                                 htmlFor="email"
@@ -97,7 +95,6 @@ const AdminManageCollectorsEdit = ({ collector, auth }) => {
                             )}
                         </div>
 
-                        {/* Password Field */}
                         <div>
                             <label
                                 htmlFor="password"
@@ -130,7 +127,6 @@ const AdminManageCollectorsEdit = ({ collector, auth }) => {
                             )}
                         </div>
 
-                        {/* Password Confirmation */}
                         <div>
                             <label
                                 htmlFor="password_confirmation"
@@ -154,7 +150,6 @@ const AdminManageCollectorsEdit = ({ collector, auth }) => {
                             />
                         </div>
 
-                        {/* Contact Number */}
                         <div>
                             <label
                                 htmlFor="contact_number"
@@ -184,7 +179,6 @@ const AdminManageCollectorsEdit = ({ collector, auth }) => {
                             )}
                         </div>
 
-                        {/* Date of Birth */}
                         <div>
                             <label
                                 htmlFor="date_of_birth"
@@ -215,7 +209,6 @@ const AdminManageCollectorsEdit = ({ collector, auth }) => {
                         </div>
                     </div>
 
-                    {/* Form Actions */}
                     <div className="flex justify-end pt-4 border-t border-gray-200">
                         <button
                             type="submit"

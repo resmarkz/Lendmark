@@ -39,7 +39,6 @@ const AdminManageAdminEdit = ({ admin, auth }) => {
             <div className="bg-white shadow overflow-hidden sm:rounded-lg">
                 <form onSubmit={handleSubmit} className="px-6 py-5 space-y-6">
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                        {/* Name Field */}
                         <div>
                             <label
                                 htmlFor="name"
@@ -69,7 +68,6 @@ const AdminManageAdminEdit = ({ admin, auth }) => {
                             )}
                         </div>
 
-                        {/* Email Field */}
                         <div>
                             <label
                                 htmlFor="email"
@@ -102,7 +100,6 @@ const AdminManageAdminEdit = ({ admin, auth }) => {
                         
                     </div>
 
-                    {/* Form Actions */}
                     <div className="flex justify-end pt-4 border-t border-gray-200">
                         <button
                             type="submit"
