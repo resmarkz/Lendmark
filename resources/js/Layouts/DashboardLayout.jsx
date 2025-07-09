@@ -49,8 +49,8 @@ function DashboardLayout({ children, auth }) {
                     href: "/dashboard/admin/loans",
                 },
                 {
-                    name: "Transactions",
-                    icon: "fas fa-exchange-alt",
+                    name: "Payments",
+                    icon: "fas fa-money-bill-wave",
                     href: "/dashboard/admin/transactions",
                 },
             ],

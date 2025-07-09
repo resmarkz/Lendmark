@@ -1,14 +1,13 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\LoanManagementController;
 use App\Http\Controllers\Admin\UserManagementController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/overview', function () {
-    return Inertia::render('Dashboard/admin/overview/index');
-})->middleware(['auth', 'verified'])->name('dashboard.admin.overview');
+Route::get('/overview', [DashboardController::class, 'viewOverview'])->middleware(['auth', 'verified'])->name('dashboard.admin.overview');
 
 
 Route::middleware(['auth', 'verified'])
