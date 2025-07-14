@@ -102,12 +102,16 @@ class UserManagementService
 
     public function updateClient(User $client, array $data)
     {
-        $client->update([
+        $userData = [
             "name" => $data["name"],
             "email" => $data["email"],
+        ];
 
-            'password' => $data['password'] ? bcrypt($data['password']) : $client->password
-        ]);
+        if (!empty($data['password'])) {
+            $userData['password'] = bcrypt($data['password']);
+        }
+
+        $client->update($userData);
 
         if ($client->clientProfile()) {
             $client->clientProfile()->update([
@@ -151,7 +155,7 @@ class UserManagementService
             'email' => $data['email'],
         ]);
 
-        
+
 
         return $admin;
     }

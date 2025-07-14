@@ -83,7 +83,8 @@ function DashboardLayout({ children, auth }) {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 flex">
+        <div className="h-screen min-h-screen bg-gray-50 grid grid-cols-1 lg:grid-cols-[auto_1fr] grid-rows-[auto_1fr] overflow-hidden">
+            {/* Mobile sidebar overlay */}
             {sidebarOpen && (
                 <div
                     className="fixed inset-0 z-30 bg-black bg-opacity-50 lg:hidden"
@@ -91,10 +92,11 @@ function DashboardLayout({ children, auth }) {
                 ></div>
             )}
 
-            <div
-                className={`fixed inset-y-0 left-0 z-40 w-64 bg-white shadow-md transform transition-transform duration-200 ease-in-out ${
+            {/* Sidebar - positioned first in DOM for mobile, but appears first visually on desktop */}
+            <aside
+                className={`fixed lg:static inset-y-0 left-0 z-40 w-64 bg-white shadow-md transform transition-transform duration-200 ease-in-out ${
                     sidebarOpen ? "translate-x-0" : "-translate-x-full"
-                } lg:translate-x-0`}
+                } lg:translate-x-0 lg:col-start-1 lg:row-span-2`}
             >
                 <div className="h-16 px-4 flex items-center justify-between border-b border-gray-200">
                     <span className="text-indigo-600 font-bold text-xl">
@@ -224,45 +226,45 @@ function DashboardLayout({ children, auth }) {
                         ))}
                     </nav>
                 </div>
-            </div>
+            </aside>
 
-            <div className="flex-1 flex flex-col ml-0 lg:ml-64">
-                <header className="fixed top-0 right-0 left-0 lg:left-64 h-16 bg-white shadow-sm flex items-center justify-between px-4 sm:px-6 lg:px-8 z-20">
-                    <button
-                        type="button"
-                        className="text-gray-400 lg:hidden"
-                        onClick={() => setSidebarOpen(true)}
-                    >
-                        <i className="fas fa-bars"></i>
+            {/* Header */}
+            <header className="sticky top-0 h-16 bg-white shadow-sm flex items-center justify-between px-4 sm:px-6 lg:px-8 z-20 col-start-1 lg:col-start-2 col-span-1">
+                <button
+                    type="button"
+                    className="text-gray-400 lg:hidden"
+                    onClick={() => setSidebarOpen(true)}
+                >
+                    <i className="fas fa-bars"></i>
+                </button>
+
+                <div className="flex-1"></div>
+
+                <div className="flex items-center space-x-4">
+                    <button className="text-gray-500 hover:text-gray-700">
+                        <i className="fas fa-bell"></i>
                     </button>
-
-                    <div className="flex-1"></div>
-
-                    <div className="flex items-center space-x-4">
-                        <button className="text-gray-500 hover:text-gray-700">
-                            <i className="fas fa-bell"></i>
-                        </button>
-                        <div className="flex items-center">
-                            <div className="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center">
-                                <span className="text-indigo-600 font-medium">
-                                    {user.name
-                                        .split(" ")
-                                        .map((n) => n[0])
-                                        .join("")
-                                        .toUpperCase()}
-                                </span>
-                            </div>
-                            <span className="ml-2 text-gray-700">
-                                {user.name}
+                    <div className="flex items-center">
+                        <div className="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center">
+                            <span className="text-indigo-600 font-medium">
+                                {user.name
+                                    .split(" ")
+                                    .map((n) => n[0])
+                                    .join("")
+                                    .toUpperCase()}
                             </span>
                         </div>
+                        <span className="ml-2 text-gray-700">{user.name}</span>
                     </div>
-                </header>
+                </div>
+            </header>
 
-                <main className="flex-1 overflow-x-hidden overflow-y-auto bg-white mt-16">
-                    <div className="py-6 px-4 sm:px-6 lg:px-8">{children}</div>
-                </main>
-            </div>
+            {/* Main content */}
+            <main className="overflow-auto bg-white col-start-1 lg:col-start-2">
+                <div className="py-6 px-4 sm:px-6 lg:px-8 min-h-[calc(100vh-4rem)]">
+                    {children}
+                </div>
+            </main>
         </div>
     );
 }

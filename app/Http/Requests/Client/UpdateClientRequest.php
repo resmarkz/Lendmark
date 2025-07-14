@@ -11,7 +11,7 @@ class UpdateClientRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,7 +21,7 @@ class UpdateClientRequest extends FormRequest
     {
         $rules = [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|unique:users,email,' . $this->route('client'),
+            'email' => 'required|string|email|unique:users,email,' . $this->route('client')->id,
             'address' => 'required|string|max:255',
             'contact_number' => 'required|string|max:15',
             'date_of_birth' => 'required|date',
