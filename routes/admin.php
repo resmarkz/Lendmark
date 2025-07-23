@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\LoanManagementController;
 use App\Http\Controllers\Admin\UserManagementController;
+use App\Http\Controllers\Admin\PaymentManagementController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -21,6 +22,13 @@ Route::middleware(['auth', 'verified'])
         Route::post('/', [LoanManagementController::class, 'addLoan'])->name('store');
         Route::put('/{loan}', [LoanManagementController::class, 'updateLoan'])->name('update');
         Route::delete('/{loan}', [LoanManagementController::class, 'destroyLoan'])->name('destroy');
+    });
+
+Route::middleware(['auth', 'verified'])
+    ->prefix('payments')
+    ->name('admin.payments.')
+    ->group(function () {
+        Route::get('/', [PaymentManagementController::class, 'viewPayments'])->name('index');
     });
 
 Route::middleware(['auth', 'verified'])

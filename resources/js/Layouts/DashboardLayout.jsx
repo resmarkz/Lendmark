@@ -51,7 +51,7 @@ function DashboardLayout({ children, auth }) {
                 {
                     name: "Payments",
                     icon: "fas fa-money-bill-wave",
-                    href: "/dashboard/admin/transactions",
+                    href: route("admin.payments.index"),
                 },
             ],
         },
