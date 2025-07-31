@@ -85,32 +85,7 @@ const AdminPaymentEdit = ({ payment, loans, auth }) => {
                                     {errors.loan_id}
                                 </p>
                             )}
-                            {selectedLoanDetails && (
-                                <div className="mt-4 p-4 bg-gray-100 rounded-md">
-                                    <h3 className="text-lg font-semibold text-gray-800">Loan Details</h3>
-                                    <p className="text-sm text-gray-600">
-                                        <span className="font-medium">Total Amount:</span> ${typeof selectedLoanDetails.amount === 'number' ? selectedLoanDetails.amount.toFixed(2) : 'N/A'}
-                                    </p>
-                                    <p className="text-sm text-gray-600">
-                                        <span className="font-medium">Remaining Balance:</span> ${typeof selectedLoanDetails.remaining_balance === 'number' ? selectedLoanDetails.remaining_balance.toFixed(2) : 'N/A'}
-                                    </p>
-                                    <p className="text-sm text-gray-600">
-                                        <span className="font-medium">Loan Term:</span> {selectedLoanDetails.loan_term} months
-                                    </p>
-                                    <p className="text-sm text-gray-600">
-                                        <span className="font-medium">Interest Rate:</span> {selectedLoanDetails.interest_rate}%
-                                    </p>
-                                    <p className="text-sm text-gray-600">
-                                        <span className="font-medium">Start Date:</span> {selectedLoanDetails.start_date}
-                                    </p>
-                                    <p className="text-sm text-gray-600">
-                                        <span className="font-medium">End Date:</span> {selectedLoanDetails.end_date}
-                                    </p>
-                                    <p className="text-sm text-gray-600">
-                                        <span className="font-medium">Status:</span> {selectedLoanDetails.status}
-                                    </p>
-                                </div>
-                            )}
+                            
                         </div>
 
                         <div>
@@ -204,6 +179,38 @@ const AdminPaymentEdit = ({ payment, loans, auth }) => {
                             )}
                         </div>
                     </div>
+
+                    {selectedLoanDetails && (
+                        <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-md">
+                            <h3 className="text-xl font-bold text-gray-800 mb-4">Loan Overview</h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <p className="text-base text-gray-700">
+                                    <span className="font-semibold">Client Name:</span> {selectedLoanDetails.client_name}
+                                </p>
+                                <p className="text-base text-gray-700">
+                                    <span className="font-semibold">Total Amount:</span> ${typeof selectedLoanDetails.amount === 'number' ? selectedLoanDetails.amount.toFixed(2) : 'N/A'}
+                                </p>
+                                <p className="text-base text-gray-700">
+                                    <span className="font-semibold">Remaining Balance:</span> ${typeof selectedLoanDetails.remaining_balance === 'number' ? selectedLoanDetails.remaining_balance.toFixed(2) : 'N/A'}
+                                </p>
+                                <p className="text-base text-gray-700">
+                                    <span className="font-semibold">Loan Term:</span> {selectedLoanDetails.loan_term} months
+                                </p>
+                                <p className="text-base text-gray-700">
+                                    <span className="font-semibold">Interest Rate:</span> {selectedLoanDetails.interest_rate}%
+                                </p>
+                                <p className="text-base text-gray-700">
+                                    <span className="font-semibold">Start Date:</span> {selectedLoanDetails.start_date}
+                                </p>
+                                <p className="text-base text-gray-700">
+                                    <span className="font-semibold">End Date:</span> {selectedLoanDetails.end_date}
+                                </p>
+                                <p className="text-base text-gray-700">
+                                    <span className="font-semibold">Status:</span> {selectedLoanDetails.status}
+                                </p>
+                            </div>
+                        </div>
+                    )}
 
                     <div className="flex justify-end pt-4 border-t border-gray-200">
                         <button

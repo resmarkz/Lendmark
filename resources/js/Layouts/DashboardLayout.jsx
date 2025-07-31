@@ -1,11 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, usePage } from "@inertiajs/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 
 function DashboardLayout({ children, auth }) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [openDropdowns, setOpenDropdowns] = useState({});
+    const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+    const userDropdownRef = useRef(null);
     const { url } = usePage();
     const user = auth.user;
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                userDropdownRef.current &&
+                !userDropdownRef.current.contains(event.target)
+            ) {
+                setUserDropdownOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     const sidebarLinks = [
         {
@@ -55,20 +75,7 @@ function DashboardLayout({ children, auth }) {
                 },
             ],
         },
-        {
-            group: "Account",
-            links: [
-                { name: "Profile", icon: "fas fa-user", href: "/profile" },
-                { name: "Settings", icon: "fas fa-cog", href: "/settings" },
-                {
-                    name: "Sign out",
-                    icon: "fas fa-sign-out-alt",
-                    href: "/logout",
-                    method: "post",
-                    as: "button",
-                },
-            ],
-        },
+        
     ];
 
     const toggleDropdown = (name) => {
@@ -244,18 +251,60 @@ function DashboardLayout({ children, auth }) {
                     <button className="text-gray-500 hover:text-gray-700">
                         <i className="fas fa-bell"></i>
                     </button>
-                    <div className="flex items-center">
-                        <div className="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center">
-                            <span className="text-indigo-600 font-medium">
-                                {user.name
-                                    .split(" ")
-                                    .map((n) => n[0])
-                                    .join("")
-                                    .toUpperCase()}
-                            </span>
-                        </div>
-                        <span className="ml-2 text-gray-700">{user.name}</span>
+                    <div
+                    className="relative inline-block text-left"
+                    ref={userDropdownRef}
+                >
+                    <div>
+                        <button
+                            type="button"
+                            onClick={() => setUserDropdownOpen(!userDropdownOpen)}
+                            className="inline-flex w-full justify-center items-center rounded-md bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100"
+                        >
+                            <div className="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center">
+                                <span className="text-indigo-600 font-medium">
+                                    {user.name
+                                        .split(" ")
+                                        .map((n) => n[0])
+                                        .join("")
+                                        .toUpperCase()}
+                                </span>
+                            </div>
+                            <span className="ml-2 text-gray-700">{user.name}</span>
+                            <FontAwesomeIcon
+                                icon={userDropdownOpen ? faChevronUp : faChevronDown}
+                                className="ml-2 h-4 w-4 text-gray-400"
+                            />
+                        </button>
                     </div>
+
+                    {userDropdownOpen && (
+                        <div className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                            <div className="py-1">
+                                <Link
+                                    href="/profile"
+                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                >
+                                    Profile
+                                </Link>
+                                <Link
+                                    href="/settings"
+                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                >
+                                    Settings
+                                </Link>
+                                <Link
+                                    href="/logout"
+                                    method="post"
+                                    as="button"
+                                    className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
+                                >
+                                    Sign out
+                                </Link>
+                            </div>
+                        </div>
+                    )}
+                </div>
                 </div>
             </header>
 

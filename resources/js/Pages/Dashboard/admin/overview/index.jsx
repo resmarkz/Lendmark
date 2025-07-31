@@ -33,78 +33,55 @@ function AdminOverviewSubPage({ metrics }) {
     const collectorPerformance = metrics.collector_performance || [];
 
     return (
-        <div className="space-y-6">
+        <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 space-y-6">
             <h1 className="text-2xl font-bold text-gray-800">
                 Dashboard Overview
             </h1>
 
             {/* Card Grid */}
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
-                {/* Total Balance */}
-                <div className="min-w-[220px]">
-                    <DashboardCard
-                        icon={faWallet}
-                        title="Total Balance"
-                        value={`$${Number(
-                            metrics.total_balance
-                        ).toLocaleString()}`}
-                        bgColor="bg-blue-50"
-                        iconBgColor="bg-blue-100"
-                        iconColor="text-blue-600"
-                        trend="up"
-                    />
-                </div>
-                {/* Total Payments */}
-                <div className="min-w-[220px]">
-                    <DashboardCard
-                        icon={faMoneyBillWave}
-                        title="Total Payments"
-                        value={`$${Number(
-                            metrics.total_paid
-                        ).toLocaleString()}`}
-                        bgColor="bg-green-50"
-                        iconBgColor="bg-green-100"
-                        iconColor="text-green-600"
-                        trend="up"
-                    />
-                </div>
-                {/* Total Loans */}
-                <div className="min-w-[220px]">
-                    <DashboardCard
-                        icon={faHandHoldingUsd}
-                        title="Total Loans"
-                        value={Number(metrics.total_loans).toLocaleString()}
-                        bgColor="bg-indigo-50"
-                        iconBgColor="bg-indigo-100"
-                        iconColor="text-indigo-600"
-                    />
-                </div>
-                {/* Total Clients */}
-                <div className="min-w-[220px]">
-                    <DashboardCard
-                        icon={faUsers}
-                        title="Total Clients"
-                        value={Number(metrics.total_clients).toLocaleString()}
-                        bgColor="bg-purple-50"
-                        iconBgColor="bg-purple-100"
-                        iconColor="text-purple-600"
-                    />
-                </div>
-                {/* Total Collectors */}
-                <div className="min-w-[220px]">
-                    <DashboardCard
-                        icon={faUserShield}
-                        title="Total Collectors"
-                        value={Number(
-                            metrics.total_collectors
-                        ).toLocaleString()}
-                        bgColor="bg-amber-50"
-                        iconBgColor="bg-amber-100"
-                        iconColor="text-amber-600"
-                    />
-                </div>
-
-                {/* Other cards... */}
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                <DashboardCard
+                    icon={faWallet}
+                    title="Total Balance"
+                    bgColor="bg-blue-50"
+                    iconBgColor="bg-blue-100"
+                    iconColor="text-blue-600"
+                    value={`${Number(metrics.total_balance).toLocaleString()}`}
+                    trend="up"
+                />
+                <DashboardCard
+                    icon={faMoneyBillWave}
+                    title="Total Payments"
+                    bgColor="bg-green-50"
+                    iconBgColor="bg-green-100"
+                    iconColor="text-green-600"
+                    value={`${Number(metrics.total_paid).toLocaleString()}`}
+                    trend="up"
+                />
+                <DashboardCard
+                    icon={faHandHoldingUsd}
+                    title="Total Loans"
+                    bgColor="bg-indigo-50"
+                    iconBgColor="bg-indigo-100"
+                    iconColor="text-indigo-600"
+                    value={Number(metrics.total_loans).toLocaleString()}
+                />
+                <DashboardCard
+                    icon={faUsers}
+                    title="Total Clients"
+                    bgColor="bg-purple-50"
+                    iconBgColor="bg-purple-100"
+                    iconColor="text-purple-600"
+                    value={Number(metrics.total_clients).toLocaleString()}
+                />
+                <DashboardCard
+                    icon={faUserShield}
+                    title="Total Collectors"
+                    bgColor="bg-amber-50"
+                    iconBgColor="bg-amber-100"
+                    iconColor="text-amber-600"
+                    value={Number(metrics.total_collectors).toLocaleString()}
+                />
             </div>
 
             {/* Charts Section */}
