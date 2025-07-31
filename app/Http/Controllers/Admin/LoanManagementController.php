@@ -47,6 +47,7 @@ class LoanManagementController extends Controller
             'interest_rate' => 'required|numeric',
             'client_profile_id' => 'required|integer',
             'collector_profile_id' => 'required|integer',
+            'disbursement_date' => 'required|date',
         ]);
 
         $this->loanService->storeLoan($data);

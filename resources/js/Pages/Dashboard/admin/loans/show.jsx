@@ -65,8 +65,8 @@ const AdminLoanShow = ({ loan }) => {
                             </span>
                         </div>
                         <InfoItem
-                            label="Due Date"
-                            value={formatDate(loan.due_date)}
+                            label="Disbursement Date"
+                            value={formatDate(loan.disbursement_date)}
                         />
                     </div>
 

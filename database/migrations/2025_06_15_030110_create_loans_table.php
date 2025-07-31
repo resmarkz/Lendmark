@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('term'); // in months
             $table->float('interest_rate');
             $table->enum('status', ['ongoing', 'pending', 'approved', 'rejected', 'overdue', 'settled', 'cancelled'])->default('ongoing');
-            $table->date('due_date')->nullable();
+            $table->date('disbursement_date'); // Renamed from due_date and made non-nullable
             $table->foreignId('collector_profile_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('client_profile_id')->nullable()->constrained()->onDelete('cascade');
             $table->timestamps();

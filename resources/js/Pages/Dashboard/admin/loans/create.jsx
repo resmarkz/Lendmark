@@ -8,6 +8,7 @@ const AdminLoanCreate = ({ clients, collectors, auth }) => {
         amount: "",
         interest_rate: "",
         term: "",
+        disbursement_date: new Date().toISOString().slice(0, 10), // Added disbursement_date with current date as default
     });
 
     const handleSubmit = (e) => {
@@ -212,6 +213,34 @@ const AdminLoanCreate = ({ clients, collectors, auth }) => {
                             {errors.term && (
                                 <p className="mt-1 text-sm text-red-600">
                                     {errors.term}
+                                </p>
+                            )}
+                        </div>
+
+                        <div>
+                            <label
+                                htmlFor="disbursement_date"
+                                className="block text-sm font-medium text-gray-700"
+                            >
+                                Disbursement Date <span className="text-red-500">*</span>
+                            </label>
+                            <input
+                                type="date"
+                                id="disbursement_date"
+                                value={data.disbursement_date}
+                                onChange={(e) =>
+                                    setData("disbursement_date", e.target.value)
+                                }
+                                className={`mt-1 block w-full rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm ${
+                                    errors.disbursement_date
+                                        ? "border-red-500"
+                                        : "border-gray-300"
+                                }`}
+                                required
+                            />
+                            {errors.disbursement_date && (
+                                <p className="mt-1 text-sm text-red-600">
+                                    {errors.disbursement_date}
                                 </p>
                             )}
                         </div>

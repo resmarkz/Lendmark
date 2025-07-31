@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('loan_id')->constrained()->onDelete('cascade');
-            $table->date('due_date');
+            $table->date('due_date')->nullable();
             $table->date('paid_at')->nullable();
             $table->decimal('amount_paid', 10, 2);
             $table->enum('status', ['unpaid', 'partial', 'paid']);

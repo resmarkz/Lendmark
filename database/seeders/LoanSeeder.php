@@ -29,6 +29,7 @@ class LoanSeeder extends Seeder
             'term' => 6,
             'interest_rate' => 10,
             'status' => 'ongoing',
+            'disbursement_date' => now(), // Added disbursement_date
         ]);
     }
 }

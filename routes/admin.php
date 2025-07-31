@@ -29,6 +29,12 @@ Route::middleware(['auth', 'verified'])
     ->name('admin.payments.')
     ->group(function () {
         Route::get('/', [PaymentManagementController::class, 'viewPayments'])->name('index');
+        Route::get('/create', [PaymentManagementController::class, 'viewCreatePayment'])->name('create');
+        Route::get('/{payment}', [PaymentManagementController::class, 'viewPayment'])->name('show');
+        Route::get('/{payment}/edit', [PaymentManagementController::class, 'viewEditPayment'])->name('edit');
+        Route::post('/', [PaymentManagementController::class, 'addPayment'])->name('store');
+        Route::put('/{payment}', [PaymentManagementController::class, 'updatePayment'])->name('update');
+        Route::delete('/{payment}', [PaymentManagementController::class, 'destroyPayment'])->name('destroy');
     });
 
 Route::middleware(['auth', 'verified'])

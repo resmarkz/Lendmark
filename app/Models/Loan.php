@@ -16,10 +16,12 @@ class Loan extends Model
         'status',
         'client_profile_id',
         'collector_profile_id',
+        'disbursement_date', // Added disbursement_date to fillable
     ];
 
     protected $casts = [
         'term' => 'integer',
+        'disbursement_date' => 'datetime', // Changed due_date to disbursement_date
     ];
 
     protected static function boot()
@@ -29,7 +31,7 @@ class Loan extends Model
         static::created(function ($loan) {
             $prefix = 'LM';
             $loan->marketing_id = $prefix . str_pad($loan->id, 6, '0', STR_PAD_LEFT);
-            $loan->due_date = now()->addMonths($loan->term);
+            // Removed: $loan->due_date = now()->addMonths($loan->term);
             $loan->save();
         });
     }

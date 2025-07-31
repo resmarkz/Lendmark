@@ -62,7 +62,7 @@ class LoanManagementService
                 'term' => $loan->term,
                 'interest_rate' => $loan->interest_rate,
                 'status' => $loan->status,
-                'due_date' => $loan->due_date,
+                'disbursement_date' => $loan->disbursement_date, // Changed from due_date
                 'client_name' => $loan->clientProfile && $loan->clientProfile->user ? $loan->clientProfile->user->name : null,
                 'collector_name' => $loan->collectorProfile && $loan->collectorProfile->user ? $loan->collectorProfile->user->name : null,
                 'payments' => $loan->payments,
@@ -106,6 +106,30 @@ class LoanManagementService
         });
     }
 
+    public function getLoansForPayments()
+    {
+        return Loan::with(['clientProfile.user'])
+            ->where('status', 'approved')
+            ->orWhere('status', 'ongoing')
+            ->with('payments') // Eager load payments
+            ->get()
+            ->map(function ($loan) {
+                $totalPaid = $loan->payments->sum('amount');
+                $remainingBalance = $loan->amount - $totalPaid;
+                return [
+                    'id' => $loan->id,
+                    'client_name' => $loan->clientProfile && $loan->clientProfile->user ? $loan->clientProfile->user->name : null,
+                    'amount' => (float) $loan->amount,
+                    'remaining_balance' => (float) $remainingBalance,
+                    'loan_term' => $loan->term,
+                    'interest_rate' => $loan->interest_rate,
+                    'start_date' => $loan->disbursement_date ? $loan->disbursement_date->format('Y-m-d') : null,
+                    'end_date' => $loan->due_date ? $loan->due_date->format('Y-m-d') : null,
+                    'status' => $loan->status,
+                ];
+            });
+    }
+
     public function updateLoan(Loan $loan, array $data)
     {
         $loan->update($data);
@@ -114,7 +138,70 @@ class LoanManagementService
 
     public function storeLoan(array $data)
     {
-        return Loan::create($data);
+        $loan = Loan::create($data);
+        // Generate payments after the loan is created
+        $this->generatePayments($loan);
+        return $loan;
+    }
+
+    /**
+     * Generates payment schedule for a given loan.
+     * This assumes monthly payments.
+     *
+     * @param Loan $loan
+     * @return void
+     */
+    public function generatePayments(Loan $loan): void
+    {
+        $principal = $loan->amount;
+        $annualInterestRate = $loan->interest_rate / 100;
+        $termInMonths = $loan->term;
+        $disbursementDate = new \DateTime($loan->disbursement_date);
+
+        // Calculate monthly interest rate
+        $monthlyInterestRate = $annualInterestRate / 12;
+
+        // Calculate monthly payment using the formula for an amortizing loan
+        // M = P [ i(1 + i)^n ] / [ (1 + i)^n – 1]
+        // Where:
+        // M = Monthly Payment
+        // P = Principal Loan Amount
+        // i = Monthly Interest Rate
+        // n = Number of Payments (Term in Months)
+        if ($monthlyInterestRate > 0) {
+            $monthlyPayment = $principal * ($monthlyInterestRate * pow((1 + $monthlyInterestRate), $termInMonths)) / (pow((1 + $monthlyInterestRate), $termInMonths) - 1);
+        } else {
+            $monthlyPayment = $principal / $termInMonths; // Simple division if no interest
+        }
+
+        $remainingPrincipal = $principal;
+
+        for ($i = 1; $i <= $termInMonths; $i++) {
+            $interestForMonth = $remainingPrincipal * $monthlyInterestRate;
+            $principalPaidThisMonth = $monthlyPayment - $interestForMonth;
+            $remainingPrincipal -= $principalPaidThisMonth;
+
+            // Ensure remaining principal doesn't go negative due to floating point inaccuracies
+            if ($remainingPrincipal < 0.01 && $remainingPrincipal > -0.01) {
+                $remainingPrincipal = 0;
+            }
+
+            // Adjust last payment to account for any rounding differences
+            if ($i === $termInMonths) {
+                $monthlyPayment += $remainingPrincipal;
+                $principalPaidThisMonth += $remainingPrincipal;
+                $remainingPrincipal = 0;
+            }
+
+            $dueDate = clone $disbursementDate;
+            $dueDate->modify('+' . $i . ' months');
+
+            $loan->payments()->create([
+                'due_date' => $dueDate->format('Y-m-d'),
+                'amount_paid' => round($monthlyPayment, 2), // This will be the expected payment amount
+                'status' => 'unpaid',
+            ]);
+        }
     }
 
     public function deleteLoan(Loan $loan)
