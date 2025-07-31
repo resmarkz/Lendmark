@@ -205,7 +205,7 @@ class UserManagementService
 
     public function getClientDetails(User $client)
     {
-        $client->load('clientProfile');
+        $client->load(['clientProfile.loans.payments']);
         return $client;
     }
 }

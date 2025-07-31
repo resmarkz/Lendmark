@@ -9,6 +9,8 @@ class Loan extends Model
 {
     use HasFactory;
 
+    protected $appends = ['remaining_balance'];
+
     protected $fillable = [
         'amount',
         'term',
@@ -21,7 +23,8 @@ class Loan extends Model
 
     protected $casts = [
         'term' => 'integer',
-        'disbursement_date' => 'datetime', // Changed due_date to disbursement_date
+        'disbursement_date' => 'datetime',
+        'amount' => 'float',
     ];
 
     protected static function boot()
@@ -49,5 +52,10 @@ class Loan extends Model
     public function collectorProfile()
     {
         return $this->belongsTo(CollectorProfile::class);
+    }
+
+    public function getRemainingBalanceAttribute()
+    {
+        return $this->amount - $this->payments->sum('amount_paid');
     }
 }

@@ -68,10 +68,10 @@ const LoanTable = ({ loans }) => {
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                 {new Date(loan.disbursement_date).toLocaleDateString("en-US", {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                        })}
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                })}
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                 <div className="flex justify-end space-x-2">
@@ -136,11 +136,14 @@ const LoanTable = ({ loans }) => {
                 <div className="flex flex-col">
                     <span className="text-gray-500 font-medium">Due Date</span>
                     <span>
-                        {new Date(loan.disbursement_date).toLocaleDateString("en-US", {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                        })}
+                        {new Date(loan.disbursement_date).toLocaleDateString(
+                            "en-US",
+                            {
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                            }
+                        )}
                     </span>
                 </div>
             </div>
