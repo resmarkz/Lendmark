@@ -21,13 +21,7 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
-            UserSeeder::class,
             AdminProfileSeeder::class,
-            CollectorProfileSeeder::class,
-            ClientProfileSeeder::class,
-            ContactReferenceSeeder::class,
-            LoanSeeder::class,
-            PaymentSeeder::class,
         ]);
     }
 }

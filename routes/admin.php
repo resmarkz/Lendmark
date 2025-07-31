@@ -22,6 +22,7 @@ Route::middleware(['auth', 'verified'])
         Route::post('/', [LoanManagementController::class, 'addLoan'])->name('store');
         Route::put('/{loan}', [LoanManagementController::class, 'updateLoan'])->name('update');
         Route::delete('/{loan}', [LoanManagementController::class, 'destroyLoan'])->name('destroy');
+        Route::put('/{loan}/approve', [LoanManagementController::class, 'approve'])->name('approve');
     });
 
 Route::middleware(['auth', 'verified'])

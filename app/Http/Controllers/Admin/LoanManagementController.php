@@ -95,4 +95,10 @@ class LoanManagementController extends Controller
         $this->loanService->deleteLoan($loan);
         return redirect()->route('admin.loans.index')->with('success', 'Loan deleted successfully.');
     }
+
+    public function approve(Loan $loan)
+    {
+        $this->loanService->approveLoan($loan);
+        return redirect()->back()->with('success', 'Loan approved successfully.');
+    }
 }

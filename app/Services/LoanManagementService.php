@@ -139,8 +139,6 @@ class LoanManagementService
     public function storeLoan(array $data)
     {
         $loan = Loan::create($data);
-        // Generate payments after the loan is created
-        $this->generatePayments($loan);
         return $loan;
     }
 
@@ -207,5 +205,13 @@ class LoanManagementService
     public function deleteLoan(Loan $loan)
     {
         $loan->delete();
+    }
+
+    public function approveLoan(Loan $loan)
+    {
+        $loan->status = 'approved';
+        $loan->save();
+        $this->generatePayments($loan);
+        return $loan;
     }
 }

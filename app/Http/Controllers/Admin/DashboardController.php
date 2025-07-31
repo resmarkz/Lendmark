@@ -16,7 +16,7 @@ class DashboardController extends Controller
     {
         // 'ongoing','pending','approved','rejected','overdue','settled','cancelled'
         $total_loans = Loan::count();
-        $total_balance = Loan::where('status', 'approved')->sum('amount');
+        $total_balance = Loan::whereIn('status', ['approved', 'ongoing', 'overdue'])->get()->sum('remaining_balance');
         $total_paid = Payment::whereIn('status', ['partial', 'paid'])->sum('amount_paid');
         $total_clients = ClientProfile::count();
         $total_collectors = CollectorProfile::count();

@@ -5,9 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Loan;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Services\LoanManagementService;
 
 class LoanController extends Controller
 {
+    protected $loanService;
+
+    public function __construct(LoanManagementService $loanService)
+    {
+        $this->loanService = $loanService;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -24,12 +32,12 @@ class LoanController extends Controller
                     'term' => $loan->term,
                     'interest_rate' => $loan->interest_rate,
                     'status' => $loan->status,
-                    'due_date' => $loan->due_date,
-                    'client_name' => $loan->clientProfile ? $loan->clientProfile->name : null,
+                    'disbursement_date' => $loan->disbursement_date,
+                    'client_name' => $loan->clientProfile ? $loan->clientProfile->user->name : null,
                     'payments' => $loan->payments,
                     'assignments' => $loan->loanAssignments->map(function ($assignment) {
                         return [
-                            'collector_name' => $assignment->collectorProfile ? $assignment->collectorProfile->name : null,
+                            'collector_name' => $assignment->collectorProfile ? $assignment->collectorProfile->user->name : null,
                         ];
                     }),
                 ];
@@ -37,6 +45,12 @@ class LoanController extends Controller
         return Inertia::render('Dashboard/admin/loans/index', [
             'loans' => $loans,
         ]);
+    }
+
+    public function approve(Loan $loan)
+    {
+        $this->loanService->approveLoan($loan);
+        return redirect()->back()->with('success', 'Loan approved successfully.');
     }
 
     /**
