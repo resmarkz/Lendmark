@@ -115,7 +115,7 @@ class LoanManagementService
             ->with('payments') // Eager load payments
             ->get()
             ->map(function ($loan) {
-                $totalPaid = $loan->payments->sum('amount');
+                $totalPaid = $loan->payments->sum('amount_paid');
                 $remainingBalance = $loan->amount - $totalPaid;
                 return [
                     'id' => $loan->id,

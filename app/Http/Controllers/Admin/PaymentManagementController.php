@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Payment;
 use App\Services\PaymentManagementService;
 use App\Services\LoanManagementService;
+use App\Models\Loan;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class PaymentManagementController extends Controller
 {
@@ -47,7 +49,28 @@ class PaymentManagementController extends Controller
 
     public function addPayment(Request $request)
     {
-        $this->paymentManagementService->addPayment($request);
+        $validatedData = $request->validate([
+            'loan_id' => 'required|exists:loans,id',
+            'amount_paid' => [
+                'required',
+                'numeric',
+                'min:0.01',
+                function ($attribute, $value, $fail) use ($request) {
+                    $loan = Loan::with('payments')->find($request->loan_id);
+                    if (!$loan) {
+                        return; // Already handled by exists rule
+                    }
+                    $remainingBalance = $loan->amount - $loan->payments->sum('amount_paid');
+                    if ($value > $remainingBalance) {
+                        $fail("The amount paid cannot exceed the remaining balance of {$remainingBalance}.");
+                    }
+                },
+            ],
+            'paid_at' => 'required|date',
+            'status' => ['required', Rule::in(['unpaid', 'partial', 'paid'])],
+        ]);
+
+        $this->paymentManagementService->addPayment($validatedData);
         return redirect()->route('admin.payments.index');
     }
 

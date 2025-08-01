@@ -3,6 +3,8 @@ import { Link } from "@inertiajs/react";
 import Table from "./Table";
 import DeleteButton from "../DeleteButton";
 
+import { formatCurrency } from "@/utils";
+
 const PaymentTable = ({ payments }) => {
     const getStatusBadge = (status) => {
         const statusColors = {
@@ -46,7 +48,7 @@ const PaymentTable = ({ payments }) => {
                 </Link>
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                ₱{parseInt(payment.amount_paid).toLocaleString()}
+                {formatCurrency(payment.amount_paid)}
             </td>
             <td className="px-6 py-4 whitespace-nowrap">
                 <span

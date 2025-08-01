@@ -3,6 +3,8 @@ import { Link } from "@inertiajs/react";
 import Table from "./Table";
 import DeleteButton from "../DeleteButton";
 
+import { formatCurrency } from "@/utils";
+
 const LoanTable = ({ loans }) => {
     const getStatusBadge = (status) => {
         const statusClasses = {
@@ -51,7 +53,7 @@ const LoanTable = ({ loans }) => {
                 {loan.collector_name || "N/A"}
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                ₱{parseInt(loan.amount).toLocaleString()}
+                {formatCurrency(loan.amount)}
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                 {loan.interest_rate}%

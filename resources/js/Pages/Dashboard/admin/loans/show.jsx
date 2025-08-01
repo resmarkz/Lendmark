@@ -1,6 +1,8 @@
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import { Link } from "@inertiajs/react";
 
+import { formatCurrency } from "@/utils";
+
 const statusColors = {
     active: "bg-blue-100 text-blue-800",
     ongoing: "bg-blue-100 text-blue-800",

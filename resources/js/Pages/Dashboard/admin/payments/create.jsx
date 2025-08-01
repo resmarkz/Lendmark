@@ -2,6 +2,8 @@ import DashboardLayout from "@/Layouts/DashboardLayout";
 import { useForm, Link } from "@inertiajs/react";
 import { useState } from "react";
 
+import { formatCurrency } from "@/utils";
+
 const AdminPaymentCreate = ({ loans, auth }) => {
     const [selectedLoanDetails, setSelectedLoanDetails] = useState(null);
 
@@ -9,7 +11,7 @@ const AdminPaymentCreate = ({ loans, auth }) => {
         loan_id: "",
         amount_paid: "",
         due_date: "",
-        paid_at: "",
+        paid_at: new Date().toISOString().slice(0, 10),
         status: "",
     });
 
@@ -52,10 +54,14 @@ const AdminPaymentCreate = ({ loans, auth }) => {
                                 value={data.loan_id}
                                 onChange={(e) => {
                                     const selectedId = e.target.value;
-                                    setData("loan_id", selectedId);
                                     const loan = loans.find(
                                         (l) => l.id == selectedId
                                     );
+                                    setData({
+                                        ...data,
+                                        loan_id: selectedId,
+                                        amount_paid: loan ? loan.remaining_balance.toFixed(2) : '',
+                                    });
                                     setSelectedLoanDetails(loan);
                                 }}
                                 className={`mt-1 block w-full rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm ${
@@ -100,9 +106,15 @@ const AdminPaymentCreate = ({ loans, auth }) => {
                                         : "border-gray-300"
                                 }`}
                                 required
-                                min="0"
+                                min="0.01"
                                 step="0.01"
+                                max={selectedLoanDetails ? selectedLoanDetails.remaining_balance : ''}
                             />
+                            {selectedLoanDetails && (
+                                <p className="mt-1 text-sm text-gray-500">
+                                    Max: {selectedLoanDetails.remaining_balance.toFixed(2)}
+                                </p>
+                            )}
                             {errors.amount_paid && (
                                 <p className="mt-1 text-sm text-red-600">
                                     {errors.amount_paid}
@@ -180,10 +192,10 @@ const AdminPaymentCreate = ({ loans, auth }) => {
                                     <span className="font-semibold">Client Name:</span> {selectedLoanDetails.client_name}
                                 </p>
                                 <p className="text-base text-gray-700">
-                                    <span className="font-semibold">Total Amount:</span> ${typeof selectedLoanDetails.amount === 'number' ? selectedLoanDetails.amount.toFixed(2) : 'N/A'}
+                                    <span className="font-semibold">Total Amount:</span> {formatCurrency(selectedLoanDetails.amount)}
                                 </p>
                                 <p className="text-base text-gray-700">
-                                    <span className="font-semibold">Remaining Balance:</span> ${typeof selectedLoanDetails.remaining_balance === 'number' ? selectedLoanDetails.remaining_balance.toFixed(2) : 'N/A'}
+                                    <span className="font-semibold">Remaining Balance:</span> {formatCurrency(selectedLoanDetails.remaining_balance)}
                                 </p>
                                 <p className="text-base text-gray-700">
                                     <span className="font-semibold">Loan Term:</span> {selectedLoanDetails.loan_term} months

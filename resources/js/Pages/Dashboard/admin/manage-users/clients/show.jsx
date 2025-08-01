@@ -1,6 +1,8 @@
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import { Link } from "@inertiajs/react";
 
+import { formatCurrency } from "@/utils";
+
 const AdminManageClientsShow = ({ client, auth }) => {
     const allPayments =
         client.client_profile?.loans?.flatMap((loan) => loan.payments) || [];
@@ -162,30 +164,10 @@ const AdminManageClientsShow = ({ client, auth }) => {
                                                                 </Link>
                                                             </td>
                                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                                ₱
-                                                                {typeof loan.amount ===
-                                                                "number"
-                                                                    ? loan.amount.toLocaleString(
-                                                                          "en-US",
-                                                                          {
-                                                                              minimumFractionDigits: 0,
-                                                                              maximumFractionDigits: 0,
-                                                                          }
-                                                                      )
-                                                                    : "N/A"}
+                                                                {formatCurrency(loan.amount)}
                                                             </td>
                                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                                ₱
-                                                                {typeof loan.remaining_balance ===
-                                                                "number"
-                                                                    ? loan.remaining_balance.toLocaleString(
-                                                                          "en-US",
-                                                                          {
-                                                                              minimumFractionDigits: 0,
-                                                                              maximumFractionDigits: 0,
-                                                                          }
-                                                                      )
-                                                                    : "0.00"}
+                                                                {formatCurrency(loan.remaining_balance)}
                                                             </td>
                                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                                 {loan.status}
@@ -248,20 +230,7 @@ const AdminManageClientsShow = ({ client, auth }) => {
                                                         </Link>
                                                     </td>
                                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                        ₱
-                                                        {typeof parseFloat(
-                                                            payment.amount_paid
-                                                        ) === "number"
-                                                            ? parseFloat(
-                                                                  payment.amount_paid
-                                                              ).toLocaleString(
-                                                                  "en-US",
-                                                                  {
-                                                                      minimumFractionDigits: 0,
-                                                                      maximumFractionDigits: 0,
-                                                                  }
-                                                              )
-                                                            : "N/A"}
+                                                        {formatCurrency(payment.amount_paid)}
                                                     </td>
                                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                         {new Date(

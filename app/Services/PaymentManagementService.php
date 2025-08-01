@@ -64,9 +64,9 @@ class PaymentManagementService
         return $payment->load(['loan.clientProfile.user']);
     }
 
-    public function addPayment(Request $request)
+    public function addPayment(array $data)
     {
-        return Payment::create($request->all());
+        return Payment::create($data);
     }
 
     public function updatePayment(Request $request, Payment $payment)
