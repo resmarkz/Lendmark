@@ -51,6 +51,7 @@ class PaymentManagementService
                 'paid_at' => $payment->paid_at,
                 'amount_paid' => $payment->amount_paid,
                 'status' => $payment->status,
+                'client_id' => $payment->loan && $payment->loan->clientProfile ? $payment->loan->clientProfile->user->id : null,
                 'client_name' => $payment->loan && $payment->loan->clientProfile && $payment->loan->clientProfile->user ? $payment->loan->clientProfile->user->name : null,
             ];
         });

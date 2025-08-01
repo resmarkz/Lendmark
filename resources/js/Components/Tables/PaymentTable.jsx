@@ -36,10 +36,14 @@ const PaymentTable = ({ payments }) => {
                 </Link>
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {payment.loan_id || "N/A"}
+                <Link href={route("admin.loans.show", payment.loan_id)} className="font-medium text-indigo-600 hover:text-indigo-900 hover:underline">
+                    {payment.loan_id || "N/A"}
+                </Link>
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {payment.client_name || "N/A"}
+                <Link href={route("admin.manage-users.clients.show", payment.client_id)} className="font-medium text-indigo-600 hover:text-indigo-900 hover:underline">
+                    {payment.client_name || "N/A"}
+                </Link>
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                 ₱{parseInt(payment.amount_paid).toLocaleString()}

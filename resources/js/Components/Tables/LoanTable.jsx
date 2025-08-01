@@ -43,7 +43,9 @@ const LoanTable = ({ loans }) => {
                 </Link>
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {loan.client_name || "N/A"}
+                <Link href={route("admin.manage-users.clients.show", loan.client_id)} className="font-medium text-indigo-600 hover:text-indigo-900 hover:underline">
+                    {loan.client_name || "N/A"}
+                </Link>
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                 {loan.collector_name || "N/A"}

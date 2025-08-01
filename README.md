@@ -1,15 +1,14 @@
 # 💼 LENDMARK – Lending Management System
 
-LENDMARK is a Laravel-based lending application designed to manage users, loan processing, payments, and role-based workflows. It supports referral-based loan assignments and tracks the entire lifecycle of a client's borrowing journey.
+LENDMARK is a Laravel-based lending application designed to manage users, loan processing, payments, and role-based workflows. It supports loan assignments to collectors and tracks the entire lifecycle of a client's borrowing journey.
 
 ---
 
 ## 🚀 Features
 
--   Role-based access: Admin, Agent, Client
--   Agent referrals with custom referral codes
+-   Role-based access: Admin, Collector, Client
 -   Loan application, approval, and payment tracking
--   Department and user profile management
+-   User profile management
 -   Responsive dashboard and clean architecture
 
 ---
@@ -18,34 +17,30 @@ LENDMARK is a Laravel-based lending application designed to manage users, loan p
 
 ### 🛡️ Admin
 
--   Manage users (Admins, Agents, Clients)
--   Assign loans and departments
+-   Manage users (Admins, Collectors, Clients)
+-   Assign loans to collectors
 -   View all loans and payments
 -   Configure system permissions
 
-### 🧑‍💼 Agent
+### 🧑‍💼 Collector
 
--   Assigned by role: `telemarketer` or `collector`
 -   Manages assigned clients and loans
 -   Views payment schedules
--   Works through referrals or admin assignments
+-   Follows up on payments
 
 ### 👨‍💼 Client
 
 -   Registers and applies for loans
--   Can input referral code during sign-up or loan application
 -   Tracks loan status and makes payments
 
 ---
 
 ## 🔁 Workflow Overview
 
-1. **Client signs up**, enters optional referral code.
-2. Referral is stored and linked to an `agent_profile`.
-3. Client applies for a loan.
-4. Loan is auto-assigned (via referral) or manually assigned by admin.
-5. Payments are scheduled and tracked.
-6. Collectors follow up on payments.
+1.  **Client signs up** and applies for a loan.
+2.  **Admin** reviews the loan application and assigns it to a **Collector**.
+3.  Payments are scheduled and tracked.
+4.  **Collectors** follow up on payments.
 
 ---
 
@@ -53,39 +48,31 @@ LENDMARK is a Laravel-based lending application designed to manage users, loan p
 
 ### `users`
 
--   `name`, `email`, `password`, `role`: admin | agent | client
-
-### `agent_profiles`
-
--   `user_id`, `referral_code` (unique), `contact_number`, `department_id`, `region`, `hired_at`, `notes`
+-   `name`, `email`, `password`, `role`: admin | collector | client
 
 ### `admin_profiles`
 
--   `user_id`, `position`
+-   `user_id`
+
+### `collector_profiles`
+
+-   `user_id`, `contact_number`, `date_of_birth`
 
 ### `client_profiles`
 
--   `user_id`, `address`, `source_of_income`, `date_of_birth`, etc.
+-   `user_id`, `address`, `contact_number`, `date_of_birth`, `source_of_income`
 
-### `departments`
+### `contact_references`
 
--   `name`: TELEMARKETER | COLLECTIONS
+-   `client_profile_id`, `name`, `contact_number`, `relationship`, `source_of_income`
 
 ### `loans`
 
--   `client_profile_id`, `amount`, `term`, `interest_rate`, `status`
+-   `client_profile_id`, `collector_profile_id`, `marketing_id`, `amount`, `term`, `interest_rate`, `status`, `disbursement_date`
 
 ### `payments`
 
--   `loan_id`, `due_date`, `paid_at`, `amount_paid`, `status`
-
-### `loan_assignments`
-
--   `loan_id`, `agent_profile_id`, `role`: telemarketer | collector
-
-### `referrals`
-
--   `referral_code` (FK to `agent_profiles`), `client_profile_id`
+-   `loan_id`, `collector_profile_id`, `due_date`, `paid_at`, `amount_paid`, `status`
 
 ---
 
@@ -101,34 +88,35 @@ LENDMARK is a Laravel-based lending application designed to manage users, loan p
 
 ## 📂 Setup Instructions
 
-1. Clone the repository:
+1.  Clone the repository:
 
     ```bash
     git clone https://github.com/resmarkz/Lendmark.git
     cd lendmark
     ```
 
-2. Install dependencies:
+2.  Install dependencies:
 
     ```bash
     composer install
     npm install && npm run dev
     ```
 
-3. Setup environment:
+3.  Setup environment:
 
     ```bash
     cp .env.example .env
     php artisan key:generate
     ```
 
-4. Run migrations:
+4.  Run migrations:
 
     ```bash
     php artisan migrate
     ```
 
-5. Seed initial data (optional):
+5.  Seed initial data (optional):
+
     ```bash
     php artisan db:seed
     ```
@@ -144,4 +132,3 @@ MIT License © 2025 LENDMARK Team
 ## ✍️ Notes
 
 -   This app is currently in development. Features are subject to change.
--   Referral flow can be extended with tracking analytics, rewards, or performance metrics.

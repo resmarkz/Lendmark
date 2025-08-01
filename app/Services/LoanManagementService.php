@@ -63,6 +63,7 @@ class LoanManagementService
                 'interest_rate' => $loan->interest_rate,
                 'status' => $loan->status,
                 'disbursement_date' => $loan->disbursement_date, // Changed from due_date
+                'client_id' => $loan->clientProfile ? $loan->clientProfile->user->id : null,
                 'client_name' => $loan->clientProfile && $loan->clientProfile->user ? $loan->clientProfile->user->name : null,
                 'collector_name' => $loan->collectorProfile && $loan->collectorProfile->user ? $loan->collectorProfile->user->name : null,
                 'payments' => $loan->payments,

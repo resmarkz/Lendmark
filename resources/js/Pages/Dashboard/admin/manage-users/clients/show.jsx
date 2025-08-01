@@ -242,9 +242,11 @@ const AdminManageClientsShow = ({ client, auth }) => {
                                         <tbody className="bg-white divide-y divide-gray-200">
                                             {allPayments.map((payment) => (
                                                 <tr key={payment.id}>
-                                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                                                {payment.id}
-                                                            </td>
+                                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-indigo-600">
+                                                        <Link href={route("admin.payments.show", payment.id)} className="hover:underline">
+                                                            {payment.id}
+                                                        </Link>
+                                                    </td>
                                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                         ₱
                                                         {typeof parseFloat(
