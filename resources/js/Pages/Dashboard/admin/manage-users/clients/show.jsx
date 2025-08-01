@@ -164,10 +164,14 @@ const AdminManageClientsShow = ({ client, auth }) => {
                                                                 </Link>
                                                             </td>
                                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                                {formatCurrency(loan.amount)}
+                                                                {formatCurrency(
+                                                                    loan.amount
+                                                                )}
                                                             </td>
                                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                                {formatCurrency(loan.remaining_balance)}
+                                                                {formatCurrency(
+                                                                    loan.remaining_balance
+                                                                )}
                                                             </td>
                                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                                 {loan.status}
@@ -225,12 +229,20 @@ const AdminManageClientsShow = ({ client, auth }) => {
                                             {allPayments.map((payment) => (
                                                 <tr key={payment.id}>
                                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-indigo-600">
-                                                        <Link href={route("admin.payments.show", payment.id)} className="hover:underline">
+                                                        <Link
+                                                            href={route(
+                                                                "admin.payments.show",
+                                                                payment.id
+                                                            )}
+                                                            className="hover:underline"
+                                                        >
                                                             {payment.id}
                                                         </Link>
                                                     </td>
                                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                        {formatCurrency(payment.amount_paid)}
+                                                        {formatCurrency(
+                                                            payment.amount_paid
+                                                        )}
                                                     </td>
                                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                         {new Date(

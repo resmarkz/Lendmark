@@ -72,7 +72,9 @@ const AdminPaymentCreate = ({ loans, auth }) => {
                                 required
                             >
                                 <option value="">Select Loan</option>
-                                {loans.map((loan) => (
+                                {loans
+                                    .filter((loan) => loan.remaining_balance > 0)
+                                    .map((loan) => (
                                     <option key={loan.id} value={loan.id}>
                                         {loan.id} - {loan.client_name}
                                     </option>

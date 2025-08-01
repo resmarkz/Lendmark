@@ -9,7 +9,7 @@ function DashboardLayout({ children, auth }) {
     const [userDropdownOpen, setUserDropdownOpen] = useState(false);
     const userDropdownRef = useRef(null);
     const { url } = usePage();
-    const user = auth.user;
+    const user = auth?.user;
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -72,6 +72,11 @@ function DashboardLayout({ children, auth }) {
                     name: "Payments",
                     icon: "fas fa-money-bill-wave",
                     href: route("admin.payments.index"),
+                },
+                {
+                    name: "Reports",
+                    icon: "fas fa-chart-bar",
+                    href: route("admin.reports.index"),
                 },
             ],
         },
@@ -263,14 +268,14 @@ function DashboardLayout({ children, auth }) {
                         >
                             <div className="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center">
                                 <span className="text-indigo-600 font-medium">
-                                    {user.name
+                                    {user?.name
                                         .split(" ")
                                         .map((n) => n[0])
                                         .join("")
                                         .toUpperCase()}
                                 </span>
                             </div>
-                            <span className="ml-2 text-gray-700">{user.name}</span>
+                            <span className="ml-2 text-gray-700">{user?.name}</span>
                             <FontAwesomeIcon
                                 icon={userDropdownOpen ? faChevronUp : faChevronDown}
                                 className="ml-2 h-4 w-4 text-gray-400"

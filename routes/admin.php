@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\LoanManagementController;
 use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\Admin\PaymentManagementController;
+use App\Http\Controllers\Admin\ReportsController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -69,4 +70,13 @@ Route::middleware(['auth', 'verified'])
             Route::put('/{collector}', [UserManagementController::class, 'updateCollector'])->name('update');
             Route::delete('/{collector}', [UserManagementController::class, 'destroyCollector'])->name('destroy');
         });
+    });
+
+Route::middleware(['auth', 'verified'])
+    ->prefix('reports')
+    ->name('admin.reports.')
+    ->group(function () {
+        Route::get('/', [ReportsController::class, 'viewExportPage'])->name('index');
+        Route::get('/export-loans', [ReportsController::class, 'exportLoansCsv'])->name('export-loans');
+        Route::get('/export-payments', [ReportsController::class, 'exportPaymentsCsv'])->name('export-payments');
     });
